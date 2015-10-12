@@ -26,10 +26,10 @@ function init() {
 	duckImage.src = 'duckhunt_various_sheet.png'
 
 	//starting x and y points for the two ducks on the canvas
-	duck1x = 225;
-	duck1y = 170;
-	duck2x = 425;
-	duck2y = 100;
+	duck1x = 250;
+	duck1y = 75;
+	duck2x = 475;
+	duck2y = 200;
 	
 	duckWidth = 108;
 	duckHeight = 78;
