@@ -1,1 +1,21 @@
-// Your JavaScript goes here...
+//lab.js
+//by Rachel Marison
+
+function parse() {
+
+	xhr = new XMLHttpRequest();
+	xhr.open("get", "data.json", true);
+	xhr.send();
+
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			jsondata = xhr.responseText;
+			var parsedObjects = JSON.parse(jsondata);
+			var elem = document.getElementById("messages");
+			for (var i = 0; i < parsedObjects.length; i++) {
+				elem.innerHTML += '<p><span id="content">' + parsedObjects[i]["content"] + '</span>' + ' - <span id="username">' + parsedObjects[i]["username"] + '</span></p>';
+			}
+		}
+	};
+
+}
