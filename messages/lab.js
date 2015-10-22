@@ -5,7 +5,7 @@ function parse() {
 
 	xhr = new XMLHttpRequest();
 	xhr.open("get", "data.json", true);
-	xhr.send();
+	xhr.send(null);
 
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4 && xhr.status == 200) {
