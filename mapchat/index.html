@@ -9,7 +9,45 @@
  		<script>
  			var myLat = 0;
  			var myLong = 0;
- 			
+ 			var xhr = new XMLHttpRequest();
+ 			var myLocation = new google.maps.LatLng(myLat, myLong);
+ 			var options = {
+ 				zoom: 13, center: myLocation, mapTypeId: google.maps.MapTypeId.ROADMAP
+ 			};
+ 			var map;
+ 			var marker;
+ 			var infoWindow = new google.maps.infoWindow();
+
+ 			function init() {
+ 				map = new google.maps.Map(document.getElementById("map_canvas"), options);
+ 			}
+
+ 			function getLocation() {
+ 				if (navigator.geolocation) { // the navigator.geolocation object is supported on browser
+					navigator.geolocation.getCurrentPosition(function(pos) {
+						myLat = pos.coords.latitude;
+						myLong = pos.coords.longitude;
+						createMap();
+					});
+				}
+				else {
+					alert("Geolocation is not supported by your web browser.");
+				}
+ 			}
+
+ 			function createMap() {
+ 				myLocation = new google.maps.LatLng(myLat, myLong);
+
+ 				//Update map
+ 				map.panTo(myLocation);
+
+ 				//Create a marker on map
+ 				marker = new google.maps.Marker({
+ 					position: myLocation, title: "My Location"
+ 				})
+ 				marker.setMap(map);
+ 			}
+
  		</script>
 
 	</head>
