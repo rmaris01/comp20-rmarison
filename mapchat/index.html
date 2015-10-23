@@ -16,7 +16,7 @@
  			};
  			var map;
  			var marker;
- 			var infoWindow = new google.maps.infoWindow();
+ 			var infoWindow = new google.maps.InfoWindow();
 
  			function init() {
  				map = new google.maps.Map(document.getElementById("map_canvas"), options);
@@ -26,6 +26,7 @@
  			function getLocation() {
  				if (navigator.geolocation) { // the navigator.geolocation object is supported on browser
 					navigator.geolocation.getCurrentPosition(function(pos) {
+						console.log("hi");
 						myLat = pos.coords.latitude;
 						myLong = pos.coords.longitude;
 						createMap();
@@ -47,6 +48,11 @@
  					position: myLocation, title: "My Location"
  				})
  				marker.setMap(map);
+
+ 				google.maps.event.addListener(marker, 'click', function() {
+ 					infoWindow.setContent(marker.title);
+ 					infoWindow.open(map, marker);
+ 				});
  			}
 
  		</script>
