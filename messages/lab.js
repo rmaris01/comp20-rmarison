@@ -3,7 +3,7 @@
 
 function parse() {
 
-	xhr = new XMLHttpRequest();
+	var xhr = new XMLHttpRequest();
 	xhr.open("get", "data.json", true);
 	xhr.send(null);
 
