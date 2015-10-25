@@ -9,8 +9,9 @@
  		<script>
  			var myLat = 0;
  			var myLong = 0;
- 			var xhr = new XMLHttpRequest();
- 			var jsonData; 			
+ 			var xhr;
+ 			var jsonData; 
+ 			var parsedData;			
  			var myLocation = new google.maps.LatLng(myLat, myLong);
  			var options = {
  				zoom: 13, center: myLocation, mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -21,19 +22,27 @@
 
  			function init() {
  				map = new google.maps.Map(document.getElementById("map_canvas"), options);
- 				xhr.open("POST", "https://secret-about-box.herokuapp.com/sendLocation", true);
- 				getLocation();
+ 				xhr = new XMLHttpRequest();
+ 				getMyLocation();
+
+ 				xhr.onreadystatechange = function() {
+					if (xhr.readyState == 4 && xhr.status == 200) {
+						jsonData = xhr.responseText;
+						parsedData = JSON.parse(jsonData);
+						createMap();
+					}
+				};
  			}
 
- 			function getLocation() {
+ 			function getMyLocation() {
  				if (navigator.geolocation) { // the navigator.geolocation object is supported on browser
 					navigator.geolocation.getCurrentPosition(function(pos) {
 						myLat = pos.coords.latitude;
 						myLong = pos.coords.longitude;
-						createMap();
-						xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-						jsonData = xhr.send("login=ErinHair&lat=" + myLat + "&lng=" + myLong + "&message=Location");
-						console.log(jsonData);	
+
+						xhr.open("POST", "https://secret-about-box.herokuapp.com/sendLocation", true);
+ 						xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+ 						xhr.send("login=ErinHair&lat=" + myLat + "&lng=" + myLong + "&message=Location");
 					});
 				}
 				else {
@@ -42,9 +51,14 @@
  			}
 
  			function createMap() {
+
+ 				for (var i = 0; i < parsedData.length; i++) {
+ 					setMarker(parsedData[i]);
+ 				}
+
  				myLocation = new google.maps.LatLng(myLat, myLong);
 
- 				//Update map
+ 				//Update map: this will display the actual map and pan to my location
  				map.panTo(myLocation);
 
  				//Create a marker on map
@@ -57,6 +71,11 @@
  					infoWindow.setContent(marker.title);
  					infoWindow.open(map, marker);
  				});
+ 			}
+
+ 			function setMarker(markerData) {
+ 				console.log(markerData["login"]);
+ 				//set each marker (take code from creatmap func)
  			}
 
  		</script>
