@@ -10,6 +10,7 @@
  			var myLat = 0;
  			var myLong = 0;
  			var xhr = new XMLHttpRequest();
+ 			var jsonData; 			
  			var myLocation = new google.maps.LatLng(myLat, myLong);
  			var options = {
  				zoom: 13, center: myLocation, mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -20,16 +21,19 @@
 
  			function init() {
  				map = new google.maps.Map(document.getElementById("map_canvas"), options);
+ 				xhr.open("POST", "https://secret-about-box.herokuapp.com/sendLocation", true);
  				getLocation();
  			}
 
  			function getLocation() {
  				if (navigator.geolocation) { // the navigator.geolocation object is supported on browser
 					navigator.geolocation.getCurrentPosition(function(pos) {
-						console.log("hi");
 						myLat = pos.coords.latitude;
 						myLong = pos.coords.longitude;
 						createMap();
+						xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+						jsonData = xhr.send("login=ErinHair&lat=" + myLat + "&lng=" + myLong + "&message=Location");
+						console.log(jsonData);	
 					});
 				}
 				else {

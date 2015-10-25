@@ -1,0 +1,1 @@
+I did not collaborate with anyone, but I did use the class notes and tutorials as a reference for my index.html and style.css files.
