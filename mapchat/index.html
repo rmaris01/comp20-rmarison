@@ -12,7 +12,7 @@
  			var xhr;
  			var jsonData; 
  			var parsedData;			
- 			var myLocation;
+ 			var myLocation; 
  			var options = {
  				zoom: 13, center: myLocation, mapTypeId: google.maps.MapTypeId.ROADMAP
  			};
@@ -49,11 +49,11 @@
  			}
 
  			function createMap() {
+ 				myLocation = new google.maps.LatLng(myLat, myLong);
+
  				for (var i = 0; i < parsedData.length; i++) {
  					setMarker(parsedData[i]);
  				}
-
- 				myLocation = new google.maps.LatLng(myLat, myLong);
 
  				//Update map: this will display the actual map and pan to my location
  				map.panTo(myLocation);
@@ -61,16 +61,61 @@
 
  			function setMarker(markerData) {
  				var infoWindow = new google.maps.InfoWindow();
- 				var markerLocation = new google.maps.LatLng(markerData["lat"], markerData["lng"]);
- 				var currentMarker = new google.maps.Marker ({
- 					position: markerLocation, title: markerData["login"]
- 				})
- 				currentMarker.setMap(map);
+ 				var markerLocation;
+ 				var currentMarker;
+ 				var milesAway = 0;
 
- 				google.maps.event.addListener(currentMarker, 'click', function() {
- 					infoWindow.setContent(currentMarker.title);
- 					infoWindow.open(map, currentMarker);
- 				});
+ 				if (markerData["login"] == "ErinHair") {
+ 					
+ 					currentMarker = new google.maps.Marker ({
+ 						position: myLocation,
+ 						map: map,
+ 						icon: "uniqueMarker.png",
+ 						title: markerData["login"]
+ 					});
+
+ 					google.maps.event.addListener(currentMarker, 'click', function() {
+ 						infoWindow.setContent("<p>Login: " + markerData["login"] + "</p>");
+ 						infoWindow.open(map, currentMarker);
+ 					});
+
+ 				} else {
+
+ 					milesAway = getMilesAway(markerData);
+
+					markerLocation = new google.maps.LatLng(markerData["lat"], markerData["lng"]);
+ 					currentMarker = new google.maps.Marker ({
+	 					position: markerLocation, 
+	 					map: map,
+	 					title: markerData["login"]
+ 					});
+
+ 					google.maps.event.addListener(currentMarker, 'click', function() {
+ 						infoWindow.setContent("<p>Login: " + markerData["login"] + "</p> <p>Message: " + markerData["message"] + "</p> <p>Miles Away: " + milesAway + "</p>");
+ 						infoWindow.open(map, currentMarker);
+ 					});
+
+ 				}
+ 			}
+
+ 			function getMilesAway(markerData) {
+ 				Number.prototype.toRad = function() {
+ 					return this * Math.PI / 180;
+ 				}
+
+ 				var earthRadius = 3959 //radius of the earth in miles
+ 				var lat1 = myLat.toRad();
+ 				var lat2 = markerData["lat"].toRad();
+
+ 				var latDifference = (markerData["lat"] - myLat).toRad();
+ 				var longDifference = (markerData["lng"] - myLong).toRad();
+
+ 				var a = (Math.sin(latDifference/2) * Math.sin(latDifference/2)) + (Math.cos(lat1) * Math.cos(lat2) * Math.sin(longDifference/2) * Math.sin(longDifference/2));
+ 				var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+ 				var d = earthRadius * c;
+
+ 				return d;
  			}
 
  		</script>
