@@ -78,7 +78,7 @@
  					});
 
  					google.maps.event.addListener(currentMarker, 'click', function() {
- 						infoWindow.setContent("<p>Login: " + markerData["login"] + "</p>");
+ 						infoWindow.setContent("<p>Login: " + markerData["login"] + "</p> <p>Message: " + markerData["message"] + "</p>");
  						infoWindow.open(map, currentMarker);
  					});
 
