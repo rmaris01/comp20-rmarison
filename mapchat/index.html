@@ -2,6 +2,7 @@
 
 <html>
 	<head>
+		<meta charset="utf-8"/>
 		<title>Map Chat</title>
  		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
  		<link rel="stylesheet" href="style.css"/>
@@ -32,6 +33,7 @@
 				};
  			}
 
+ 			//get my lat and lng and then send in post request
  			function getMyLocation() {
  				if (navigator.geolocation) { // the navigator.geolocation object is supported on browser
 					navigator.geolocation.getCurrentPosition(function(pos) {
@@ -40,7 +42,7 @@
 
 						xhr.open("POST", "https://secret-about-box.herokuapp.com/sendLocation", true);
  						xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
- 						xhr.send("login=ErinHair&lat=" + myLat + "&lng=" + myLong + "&message=Location");
+ 						xhr.send("login=ErinHair&lat=" + myLat + "&lng=" + myLong + "&message=My%20Location");
 					});
 				}
 				else {
@@ -48,6 +50,7 @@
 				}
  			}
 
+ 			//display the map and call setMarker to set each marker
  			function createMap() {
  				myLocation = new google.maps.LatLng(myLat, myLong);
 
@@ -55,10 +58,10 @@
  					setMarker(parsedData[i]);
  				}
 
- 				//Update map: this will display the actual map and pan to my location
  				map.panTo(myLocation);
  			}
 
+ 			//set each individual marker
  			function setMarker(markerData) {
  				var infoWindow = new google.maps.InfoWindow();
  				var markerLocation;
