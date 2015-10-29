@@ -14,14 +14,18 @@
  			var jsonData; 
  			var parsedData;			
  			var myLocation; 
+ 			var infoWindow;
  			var options = {
  				zoom: 13, center: myLocation, mapTypeId: google.maps.MapTypeId.ROADMAP
  			};
  			var map;
+ 			var myLogin = "ErinHair";
+ 			var myMessage = "My%20Location";
 
  			function init() {
  				map = new google.maps.Map(document.getElementById("map_canvas"), options);
  				xhr = new XMLHttpRequest();
+ 				infoWindow = new google.maps.InfoWindow();
  				getMyLocation();
 
  				xhr.onreadystatechange = function() {
@@ -42,7 +46,7 @@
 
 						xhr.open("POST", "https://secret-about-box.herokuapp.com/sendLocation", true);
  						xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
- 						xhr.send("login=ErinHair&lat=" + myLat + "&lng=" + myLong + "&message=My%20Location");
+ 						xhr.send("login=" + myLogin + "&lat=" + myLat + "&lng=" + myLong + "&message=" + myMessage);
 					});
 				}
 				else {
@@ -58,47 +62,40 @@
  					setMarker(parsedData[i]);
  				}
 
+ 				//set my unique marker
+				var myMarker = new google.maps.Marker ({
+					position: myLocation, 
+					map: map,
+					icon: "uniqueMarker.png",
+				});
+
+				google.maps.event.addListener(myMarker, 'click', function() {
+					infoWindow.setContent("<p>Login: " + myLogin + "</p> <p>Message: My Location</p>");
+					infoWindow.open(map, myMarker);
+				});
+
+				//pan to my location
  				map.panTo(myLocation);
  			}
 
  			//set each individual marker
  			function setMarker(markerData) {
- 				var infoWindow = new google.maps.InfoWindow();
  				var markerLocation;
  				var currentMarker;
  				var milesAway = 0;
 
- 				if (markerData["login"] == "ErinHair") {
- 					
- 					currentMarker = new google.maps.Marker ({
- 						position: myLocation,
- 						map: map,
- 						icon: "uniqueMarker.png",
- 						title: markerData["login"]
- 					});
+				milesAway = getMilesAway(markerData);
 
- 					google.maps.event.addListener(currentMarker, 'click', function() {
- 						infoWindow.setContent("<p>Login: " + markerData["login"] + "</p> <p>Message: " + markerData["message"] + "</p>");
- 						infoWindow.open(map, currentMarker);
- 					});
+				markerLocation = new google.maps.LatLng(markerData["lat"], markerData["lng"]);
+				currentMarker = new google.maps.Marker ({
+					position: markerLocation, 
+					map: map,
+				});
 
- 				} else {
-
- 					milesAway = getMilesAway(markerData);
-
-					markerLocation = new google.maps.LatLng(markerData["lat"], markerData["lng"]);
- 					currentMarker = new google.maps.Marker ({
-	 					position: markerLocation, 
-	 					map: map,
-	 					title: markerData["login"]
- 					});
-
- 					google.maps.event.addListener(currentMarker, 'click', function() {
- 						infoWindow.setContent("<p>Login: " + markerData["login"] + "</p> <p>Message: " + markerData["message"] + "</p> <p>Miles Away: " + milesAway + "</p>");
- 						infoWindow.open(map, currentMarker);
- 					});
-
- 				}
+				google.maps.event.addListener(currentMarker, 'click', function() {
+					infoWindow.setContent("<p>Login: " + markerData["login"] + "</p> <p>Message: " + markerData["message"] + "</p> <p>Miles Away: " + milesAway + "</p>");
+					infoWindow.open(map, currentMarker);
+				});
  			}
 
  			function getMilesAway(markerData) {
