@@ -12,12 +12,14 @@
 				$("#log").prepend("<p>" + localStorage[key] + "</p>");
 			}
 
-		$("#msg").change(function() {
-			var date = new Date();
-			var timeStamp = date.toDateString() + ", " + date.toTimeString();
-			var newMessage = timeStamp + " - " + $('#msg').val();
-			localStorage[timeStamp] = newMessage;
-			$("#log").prepend("<p>" + newMessage + "</p>");
+		$("#msg").keypress(function(event) {
+			if (event.keyCode == 13) {
+				var date = new Date();
+				var timeStamp = date.toDateString() + ", " + date.toTimeString();
+				var newMessage = timeStamp + " - " + $('#msg').val();
+				localStorage[timeStamp] = newMessage;
+				$("#log").prepend("<p>" + newMessage + "</p>");
+			}
 		});
 		
 		});
