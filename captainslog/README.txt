@@ -5,4 +5,4 @@ by Rachel Marison
 
 2. Collaborations: none
 
-3. Hours spent: ~2.5
+3. Hours spent: ~3
