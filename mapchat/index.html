@@ -44,7 +44,7 @@
 						myLat = pos.coords.latitude;
 						myLong = pos.coords.longitude;
 
-						xhr.open("POST", "https://secret-about-box.herokuapp.com/sendLocation", true);
+						xhr.open("POST", "https://shielded-dusk-3913.herokuapp.com/sendLocation", true);
  						xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
  						xhr.send("login=" + myLogin + "&lat=" + myLat + "&lng=" + myLong + "&message=" + myMessage);
 					});
