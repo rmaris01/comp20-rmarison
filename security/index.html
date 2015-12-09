@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Map Chat Security Assessment</title>
+		<link rel="stylesheet" href="style.css">
+	</head>
+
+ 	<body>
+ 		
+ 		<header>
+ 			<h1>Map Chat Security and Privacy Assessment</h1>
+ 			<h3>By Rachel Marison</h3>
+ 		</header>
+
+ 			<h2>Introduction</h2>
+ 			<hr>
+ 			<p>Map Chat is a web application written by John Russell for Comp20 assignments 2 and 3. This application retrieves the client’s current location and sends it to a Heroku web application server. It then displays all of the data from the server’s database in the form of location markers on a map.</p> 
+			<p>Although this Map Chat application correctly follows the specifications listed for assignments 2 and 3, it nonetheless contains some security and privacy issues. These issues are detailed below.</p>
+
+			<h2>Methodology</h2>
+ 			<hr>
+ 			<p>I made all my tests using the "black-box" method, meaning I didn't look at the application's source code during my testing. I only looked at the source code after I had finished my testing in order to verify the security issues I had found. I performed all my testing by using curl commands and running some of my own test code.</p>
+
+ 			<h2>Abstract of Findings</h2>
+ 			<hr>
+
+ 			<p>I found three security issues in this Map Chat application. The first two issues involve sending invalid data to the database. For the first, I was able to inject JavaScript as a "message" to the database, which redirects one of the applications API's to a youtube video. For the second, I took advantage of the fact that the application accepts any form of data for latitude and longitude (when in fact it should only accept data in the form of floats). So I was able to send in invalid data in the form of strings for latitude and longitude, thus causing errors on the client-side of the applicaiton. Lastly, this application used the wildcard "*" in regards to access control. So I was able to write some test code that successfully sends data to the database from my local machine, instead of from the client-side application. This is a security issue because only the client-side application should be able to send data to the datbase.</p>
+
+ 			<h2>Issues Found</h2>
+ 			<hr>
+
+ 			<p class="issue-heading">1. Cross-Site-Scripting (XSS)</p>
+ 			<ul>
+ 				<li>Location: Affects the GET / API</li>
+ 				
+ 				<li>
+ 					<span class="high-severity">Severity: High</span> – Injection of JavaScript code prevents the client from being able to see the check-ins data on the GET / API.
+ 				</li>
+ 				
+ 				<li>
+ 					Description/Proof of vulnerability: I found this security issue by doing a simple curl command to inject JavaScript code:
+
+					<p><img src="1.1.png" alt="Curl inject command"></p>
+					
+					<p>This curl command sends in JavaScript code for the message field, so when the client tries to use the <a href="https://limitless-beach-9227.herokuapp.com/">GET / API</a>, the page will redirect to <a href="https://www.youtube.com/watch?v=eh7lp9umG2I">this Youtube video</a>.</p> 
+ 				
+ 					<p>In the picture below we can see a glob of json data returned from the curl command. At the very bottom of all this data is a record that contains my malicious JavaScript message. This means that injecting the JavaScript code into the database was successful, and thus users won't be able to access the GET / API without being redirected to a 10-hour video of He-Man.<p>
+
+ 					<p><img src="1.2.png" alt="Malicious data accepted"></p>
+ 				</li>
+
+ 				<li>Resolution: This issue can be resolved by searching for certain characters (like &, /, or <) in the user input before putting it into the database. If a potentially dangerous character is found in the user input, then the character can be escaped to the HTML equivalent of the character. For example, ‘&’ would be replaced with ‘&amp;amp;’.
+ 				</li>
+ 			</ul>
+
+ 			<p class="issue-heading">2. Causing errors with invalid user input</p>
+ 			<ul>
+ 				<li>Location: Affects the client-side Map Chat application</li>
+ 				
+ 				<li>
+ 					<span class="low-severity">Severity: Low</span> – It is really easy to cause errors in the JavaScript console when loading the Map Chat application by simply inputting invalid latitude and longitude data. However, the errors don’t cause the application to crash, and there is a really easy solution to prevent the errors, so the severity of this error is low.
+ 				</li>
+ 				
+ 				<li>
+ 					Description/Proof of vulnerability: I found this issue by inputting strings for latitude and longitude, like in the curl command below:
+
+					<p><img src="2.1.png" alt="Curl lat lng strings command"></p>
+					
+					<p>As we can see in the below pictures, the input is accepted into the database even though lat and lng should only be floats (showing null for lat and lng in the returned JSON string, and showing NaN on the GET / API).</p> 
+
+					<p><img src="2.2.png" alt="null lat lng"></p>
+					<p><img src="2.3.png" alt="NaN lat lngs"></p>
+
+ 					<p>As a result of inputting invalid data for latitude and longitude, accessing the Map Chat application results in an "Invalid Value Error". While this issue might be considered a functionality issue, I think it also qualifies as a security issue because attackers could use this vulnerabilty to cause errors on unsuspecting clients that use Map Chat.</p>
+
+ 					<p><img src="2.4.png" alt="Map errors"></p>
+ 				</li>
+
+ 				<li>Resolution: This issue can easily be resolved by simply checking that lat and lng are floats before accepting the user input, like this:
+
+				<p>if (login == undefined || lat == undefined || lng == undefined || message == undefined || isNaN(lat) || isNaN(lng)) {  
+					<br>
+					<span class="indent-here">response.send({"error":"Whoops, something is wrong with your data!"});</span>
+					<br>
+				}</p>
+
+				<p>Note: I also noticed that if I try the below curl command, the data is put into the database even though it shouldn’t:</p>
+
+				<p>curl --data "login=ErinHair&message=test2" limitless-beach-9227.herokuapp.com/sendLocation</p>
+
+				<p>This curl command is missing the lat and lng fields, and according to the assignment 3 specifications, a submission that’s missing any required fields should just return {"error":"Whoops, something is wrong with your data!"}. However, this can easily be fixed by using the above code to check if lat or lng are undefined.</p> 
+ 				</li>
+ 			</ul>
+
+			<p class="issue-heading">3. Use of wildcard "*" for CORS</p>
+ 			<ul>
+ 				<li>Location: Affects the client-side of the Map Chat application as well as the GET APIs</li>
+ 				
+ 				<li>
+ 					<span class="high-severity">Severity: High</span> – Use of the wildcard for the CORS “Access-Control-Allow-Origin” allows any site to be able to use the sendLocation POST API. This can be dangerous because someone with malicious intent could easily send bad data to the database.
+ 				</li>
+ 				
+ 				<li>
+ 					Description/Proof of vulnerability: I found this issue by writing a bit of code to send data to the POST API from my local machine.
+
+					<p><img src="3.1.png" alt="Test code for wildcard"></p>
+					
+					<p>From my console.log “success” statement, I could clearly see that my data was successfully accepted into the database. 
+					I then reconfirmed that my data was accepted by visiting the GET API and the client-side of Map Chat:</p> 
+ 				
+ 					<p><img src="3.2.png" alt="Data went through to GET API"></p>
+ 					<p><img src="3.3.png" alt="Data went through to Map Chat"></p>
+
+ 					<p>You can see here that my data (made up of false locations and a "malicious message") successfully made it onto the check-ins log and the map. If an attacker were to use this method, they could easily mess up Map Chat by spamming the application with false locations and malicious messages (including messages that could inject malicious JavaScript).</p>
+ 				</li>
+
+ 				<li>Resolution: This issue is cause by setting the Access-Control-Allow-Origin header to the wildcard “*” because the wildcard allows anybody to send data to the server-side POST APIs. So it can easily be resolved by only allowing access to the one website (in this case <a href="http://tuftsdev.github.io/comp20-jrussell/mapchat">Map Chat</a>) instead of using the wildcard. 
+ 				</li>
+ 			</ul>
+
+ 			<h2>Conclusion</h2>
+ 			<hr>
+ 			<p>These issues with Map Chat make the application very vulnerable to attacks. Fortunately, each of the issues addressed in this report are very easy to fix. In addition, none of these issues would cost anything to fix, so there are no down-sides to fixing them; just simply add some code to check and escape dangerous characters, verify the fields of data before inserting them into the database, and get rid of the wildcard character. </p>
+	</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
