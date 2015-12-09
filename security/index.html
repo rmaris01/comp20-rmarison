@@ -41,13 +41,13 @@
  				<li>
  					Description/Proof of vulnerability: I found this security issue by doing a simple curl command to inject JavaScript code:
 
-					<p><img src="1.1.png" alt="Curl inject command"></p>
+					<p><img src="screenshots/1.1.png" alt="Curl inject command"></p>
 					
 					<p>This curl command sends in JavaScript code for the message field, so when the client tries to use the <a href="https://limitless-beach-9227.herokuapp.com/">GET / API</a>, the page will redirect to <a href="https://www.youtube.com/watch?v=eh7lp9umG2I">this Youtube video</a>.</p> 
  				
  					<p>In the picture below we can see a glob of json data returned from the curl command. At the very bottom of all this data is a record that contains my malicious JavaScript message. This means that injecting the JavaScript code into the database was successful, and thus users won't be able to access the GET / API without being redirected to a 10-hour video of He-Man.<p>
 
- 					<p><img src="1.2.png" alt="Malicious data accepted"></p>
+ 					<p><img src="screenshots/1.2.png" alt="Malicious data accepted"></p>
  				</li>
 
  				<li>Resolution: This issue can be resolved by searching for certain characters (like &, /, or <) in the user input before putting it into the database. If a potentially dangerous character is found in the user input, then the character can be escaped to the HTML equivalent of the character. For example, ‘&’ would be replaced with ‘&amp;amp;’.
@@ -65,16 +65,16 @@
  				<li>
  					Description/Proof of vulnerability: I found this issue by inputting strings for latitude and longitude, like in the curl command below:
 
-					<p><img src="2.1.png" alt="Curl lat lng strings command"></p>
+					<p><img src="screenshots/2.1.png" alt="Curl lat lng strings command"></p>
 					
 					<p>As we can see in the below pictures, the input is accepted into the database even though lat and lng should only be floats (showing null for lat and lng in the returned JSON string, and showing NaN on the GET / API).</p> 
 
-					<p><img src="2.2.png" alt="null lat lng"></p>
-					<p><img src="2.3.png" alt="NaN lat lngs"></p>
+					<p><img src="screenshots/2.2.png" alt="null lat lng"></p>
+					<p><img src="screenshots/2.3.png" alt="NaN lat lngs"></p>
 
  					<p>As a result of inputting invalid data for latitude and longitude, accessing the Map Chat application results in an "Invalid Value Error". While this issue might be considered a functionality issue, I think it also qualifies as a security issue because attackers could use this vulnerabilty to cause errors on unsuspecting clients that use Map Chat.</p>
 
- 					<p><img src="2.4.png" alt="Map errors"></p>
+ 					<p><img src="screenshots/2.4.png" alt="Map errors"></p>
  				</li>
 
  				<li>Resolution: This issue can easily be resolved by simply checking that lat and lng are floats before accepting the user input, like this:
@@ -104,13 +104,13 @@
  				<li>
  					Description/Proof of vulnerability: I found this issue by writing a bit of code to send data to the POST API from my local machine.
 
-					<p><img src="3.1.png" alt="Test code for wildcard"></p>
+					<p><img src="screenshots/3.1.png" alt="Test code for wildcard"></p>
 					
 					<p>From my console.log “success” statement, I could clearly see that my data was successfully accepted into the database. 
 					I then reconfirmed that my data was accepted by visiting the GET API and the client-side of Map Chat:</p> 
  				
- 					<p><img src="3.2.png" alt="Data went through to GET API"></p>
- 					<p><img src="3.3.png" alt="Data went through to Map Chat"></p>
+ 					<p><img src="screenshots/3.2.png" alt="Data went through to GET API"></p>
+ 					<p><img src="screenshots/3.3.png" alt="Data went through to Map Chat"></p>
 
  					<p>You can see here that my data (made up of false locations and a "malicious message") successfully made it onto the check-ins log and the map. If an attacker were to use this method, they could easily mess up Map Chat by spamming the application with false locations and malicious messages (including messages that could inject malicious JavaScript).</p>
  				</li>
