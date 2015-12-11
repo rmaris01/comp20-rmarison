@@ -1,0 +1,12 @@
+Learning Portfolio README
+by Rachel Marison
+
+1. One obvious purpose of this Git repository is to keep records and a backup of my work in case I were to lose the work on my local machine or if I had to revert back to a previous version of my work. However, another important reason for having this repository is so that I have a portfolio that I can show to employers and interviewers that display my work and progress throughout this course.
+
+2. My favorite assignment was assignment 3. While I really enjoyed doing assignment 2 and making the client-side of Map Chat, I enjoyed assignment 3 even more because I was able to learn about things I had never done before. For example, I learned how to write a web server, use server-side frameworks, and use tools like MongoDB and Heroku.
+
+3. I've grown a lot since day 1 of this course. I've learned a lot about the fundamentals of web development, and I've built a lot of cool web apps for the assignments and labs. I've also learned many key ideas that are critical in web development and in the real world as well. For example, I've learned the importance of learning things on my own, asking for help when I need it, and how to go about networking.
+
+4. The most important thing that I learned in this course is how to learn on my own and teach myself things. Knowing how to learn on my own is an essential skill in both school and the real world because I'm never going to stop learning (especially since computer science is an ever-changing field). In this course, there were many times that I've had to teach myself things. For example, in the duck hunt lab, I really wanted to make the ducks be animated (not only because of the extra credit, but also because I wanted to learn how to do animation with HTML and JavaScript). Animation was not something we learned in class, so I had to figure it out on my own using Google. When I finally got the ducks to flap their wings, I felt like I had really accomplished something and learned a lot. I also had to learn on my own for the semester group project. For my group's project, we used the Boostrap framework and the Last.fm and Spinitron APIs, all of which we'd never used before. So in order to do our project, we had to teach ourselves how to use these frameworks and APIs.
+
+5. After taking this course, I'd like to learn more about server-side work as well as databases. So I'd really like to take courses like Web Engineering and Databases.
