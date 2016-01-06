@@ -1,0 +1,181 @@
+/*	
+	showinfostyle.css
+  note: stylesheet for showinfo.html
+        This needs 'fonts' folder from bootstrap to get the glyphicon
+*/
+
+h1 {
+	font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+	text-align: center;
+    margin-top: -30px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.information {
+    background: #fff;
+    margin-top: 10px;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 50px;
+    border-radius: 10px;
+}
+
+.background {
+    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    background: url("radioBoard.jpg");
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+#backToResults {
+    margin-left: 50px; 
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+#showInfo {
+	font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+	text-align: center;
+    padding-top: 50px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+#chartInfo{
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#pieCanvas {
+    margin-left: 110px;
+    margin-right: 65px;
+    margin-bottom: 30px;
+}
+
+#barCanvas {
+    margin-left: 65px;
+    margin-right: 110px;
+    margin-bottom: 30px;
+}
+
+@media screen and (min-width:1280px) {
+    .container {
+        text-align: center;
+    }
+}
+
+@media screen and (min-width:540px) and (max-width:1279px) {
+    .container {
+        text-align: center;
+    }
+    #pieCanvas {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    #barCanvas {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+
+@media screen and (min-width:400px) and (max-width:539px) {
+    .container {
+        text-align: center;
+    }
+    #pieCanvas {
+        max-height: 250px;
+        max-width: 250px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    #barCanvas {
+        max-height: 250px;
+        max-width: 250px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+
+@media screen and (max-width:399px) {
+    .container {
+        text-align: center;
+    }
+    #pieCanvas {
+        max-height: 170px;
+        max-width: 170px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    #barCanvas {
+        max-height: 170px;
+        max-width: 170px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+
+/* lines below are copied from bootstrap.css */
+
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.btn-success {
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+
+.btn-success:hover {
+  color: #fff;
+  background-color: #449d44;
+  border-color: #398439;
+}
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+
+  src: url('./fonts/glyphicons-halflings-regular.eot');
+  src: url('./fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('./fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('./fonts/glyphicons-halflings-regular.woff') format('woff'), url('./fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('./fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.glyphicon-arrow-left:before {
+  content: "\e091";
+}

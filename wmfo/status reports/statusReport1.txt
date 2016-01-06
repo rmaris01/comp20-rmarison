@@ -1,0 +1,15 @@
+Status Report 1
+
+1) This week we figured out how to host our database on heroku, then update our database 
+using python and the PyMongo API.
+
+2) One challenge we faced was getting our heroku app to link to our github repo. 
+We're having trouble making it so that changes get deployed to heroku whenever any of us push to github.
+
+3) Our goals for next week are to begin filling out our database with the radio show data, 
+figure out what algorithms we want to use (for calculating genre percentages), and start using git branches.
+
+#Comments by Ming
+* Fill database with a small sampling to start, not everything (thousands of entries)
+* Last.fm is apparently no longer accepting enrollment for their API
+* "figure out what algorithms " --this is important.

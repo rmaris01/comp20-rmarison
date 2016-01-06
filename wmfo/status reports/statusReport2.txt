@@ -1,0 +1,16 @@
+Group 16: Status Report 2
+
+1) This week we figured out the algorithm that calculates how much a playlist
+   matches the queried genre(s).
+
+   We also determined in which phase we will calculate the percentages and what 
+   data we will store in MongoDB.
+
+2) The challenges we faced this week were developing the algorithm that 
+   reflects our thoughts on what a well-matched playlist should look like and
+   deciding on where to run the calculations for good performance.
+
+3) Next week we will populate our database with radio show data.
+
+#Comments by Ming
+* "3) Next week we will populate our database with radio show data." --you can first create a spreadsheet, then export sheet to CSV, then import that into MongoDB. :)

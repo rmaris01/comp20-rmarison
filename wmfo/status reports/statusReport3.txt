@@ -1,0 +1,13 @@
+Group 16: Status Report 3
+
+1) This week we populated our databaes with radio show data.
+
+   We almost completed the node.js program that lets our front-end pages 
+   interact with the database.
+
+   We started working on the front-end pages using Bootstrap.
+
+2) The challenges we faced this week were making the node.js work properly
+   and learning how to use Bootstrap.
+
+3) Next week we will complete the front-end pages using Bootstrap and chart.js.

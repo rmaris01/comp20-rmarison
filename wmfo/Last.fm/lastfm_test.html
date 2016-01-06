@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script type="text/javascript" src="lastfm.api.md5.js"></script>
+        <script type="text/javascript" src="lastfm.api.js"></script>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <script>
+        var lastFM = new LastFM({apiKey: '57ee3318536b23ee81d6b27e36997cde'});
+        lastFM.track.getTopTags({artist: 'beatles', track: 'let it be', autocorrect: '1'}, {success: function(data) {
+            console.log(data);
+        }, error: function(code, message) {
+            console.log("failed :(");
+        }});
+
+        </script>
+    </head>
+    <body>
+    </body>
+</html>
