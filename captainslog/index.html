@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 
+<!-- stars pic: https://i.ytimg.com/vi/sDuW__g5sWc/maxresdefault.jpg -->
 <html>
 
 <head>
 	<title>Captain's Log</title>
+	<link rel="stylesheet" href="style.css"/>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
 	<script>
 
 		$(document).ready(function() {
@@ -19,6 +22,7 @@
 				var newMessage = timeStamp + " - " + $('#msg').val();
 				localStorage[timeStamp] = newMessage;
 				$("#log").prepend("<p>" + newMessage + "</p>");
+				document.getElementById("msg").value = "";
 			}
 		});
 		
@@ -27,9 +31,12 @@
 	</script>
 </head>
 
-<body>
-	<h1>Captain's Log</h1>
-	<h3>New entry: <input type="text" id="msg" name="msg" size="30" /></h3>
-	<div id="log"></div>
+<body class="background-pic">
+	<div class="captains-log">
+		<h1>Captain's Log</h1>
+		<hr>
+		<input type="text" id="msg" name="msg" placeholder="Enter a new log here." size="30"/>
+		<div id="log"></div>
+	</div>
 </body>
 </html>
