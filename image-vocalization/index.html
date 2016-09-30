@@ -12,6 +12,8 @@
 	<script src="dropzone.js"></script>
 
 	<script>
+		var midi = null;  // global MIDIAccess object
+
 		function readURL(input) {
 		    if (input.files && input.files[0]) {
 
@@ -22,6 +24,19 @@
 		        reader.readAsDataURL(input.files[0]);
 		    }
 		}
+
+		function onMIDISuccess( midiAccess ) {
+			console.log( "MIDI ready!" );
+			midi = midiAccess;  // store in the global (in real usage, would probably keep in an object instance)
+		}
+
+		function onMIDIFailure(msg) {
+			console.log( "Failed to get MIDI access - " + msg );
+		}
+
+		function getMidi() {
+			navigator.requestMIDIAccess().then( onMIDISuccess, onMIDIFailure );
+		}
 	</script>
 
 </head>
@@ -30,8 +45,9 @@
 	<div class="image-vocal">
 		<h1>Senior Design: Image Vocalization</h1>
 		<hr>
-    	<input type='file' id="uploaded-image" onchange="readURL(this);"/>
-    	<img id="user-img" src="#" alt="your uploaded image" />
+    	<input type="file" id="image-input" onchange="readURL(this);"/> <br>
+    	<img id="user-img" src="#" alt="your uploaded image"/> <br>
+ 	   	<button id="midi-btn" onclick="getMidi()">Get Midi Access</button>
 	</div>
 </body>
 </html>
