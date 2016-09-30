@@ -42,7 +42,14 @@
 		  doesn't work, because there is no actual server to handle the file upload.
 		</p>
 
-		<form class="dropzone"></form>
+		<!-- <form action="/display_image.asp" class="dropzone"> -->
+
+		<!-- </form> -->
+
+<form action="/display_image.asp">
+  Choose an image: <input type="file" name="image" id="image"><br>
+  <input type="submit" value="Submit">
+</form>
 
 <!-- 		<input type="text" id="msg" name="msg" placeholder="Enter a new log here." size="30"/>
  -->		<div id="log"></div>
