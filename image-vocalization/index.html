@@ -11,7 +11,21 @@
 	<script src="dropzone.js"></script>
 
 	 <script>
+		function readURL(input) {
+		    if (input.files && input.files[0]) {
+		        var reader = new FileReader();
 
+		        reader.onload = function (e) {
+		            $('#user-img').attr('src', e.target.result);
+		        }
+
+		        reader.readAsDataURL(input.files[0]);
+		    }
+		}
+
+		$("#uploaded-image").change(function(){
+		    readURL(this);
+		});
 	// 	$(document).ready(function() {
 	// 		for (key in localStorage) {
 	// 			$("#log").prepend("<p>" + localStorage[key] + "</p>");
@@ -37,19 +51,15 @@
 	<div class="image-vocal">
 		<h1>Senior Design: Image Vocalization</h1>
 		<hr>
-		<p>
-		  This is the most minimal example of Dropzone. The upload in this example
-		  doesn't work, because there is no actual server to handle the file upload.
-		</p>
+	<form id="img-form" runat="server">
+    	<input type='file' id="uploaded-image" />
+    	<img id="user-img" src="#" alt="your uploaded image" />
+	</form>
 
-		<!-- <form action="/display_image.asp" class="dropzone"> -->
-
-		<!-- </form> -->
-
-<form method="get" action="http://rmaris01.github.io/comp20-rmarison/image-vocalization/display_image.asp">
+<!-- <form method="get" action="http://rmaris01.github.io/comp20-rmarison/image-vocalization/display_image.asp">
   Choose an image: <input type="file" name="image" id="image"><br>
   <input type="submit" value="Submit">
-</form>
+</form> -->
 
 <!-- 		<input type="text" id="msg" name="msg" placeholder="Enter a new log here." size="30"/>
  -->		<div id="log"></div>
