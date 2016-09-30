@@ -1,5 +1,5 @@
 <body>
 <%
-response.write("<img src= '" & request.querystring("image") & "'/>")
+response.write(request.form("<img src= '" & request.querystring("image") & "'/>"))
 %>
 </body>
