@@ -9,7 +9,7 @@ html body {
 
 .background-pic {
 	min-height: 100%;
-	background: url("stars.jpg") repeat;
+	background: url("vocalization.jpg") repeat;
 	background-color: #000; 
 }
 
@@ -18,12 +18,12 @@ h1 {
 	margin-bottom: 0;
 }
 
-.captains-log {
+.image-vocal {
 	text-align: center;
 	padding-top: 10%;
 }
 
-.captains-log hr {
+.image-vocal hr {
 	width: 20%;
 	margin-bottom: 20px;
 }
