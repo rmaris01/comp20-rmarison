@@ -19,16 +19,15 @@ http://soundfonts.gonet.biz/search.php?goto=1&grupo=1 -->
 	<script src="dropzone.js"></script>
 	
 	<script src="soundfont-player.min.js"></script>
+	<script src="imageToMelody.js"></script>
 
 	<script>
-		var context = new AudioContext();
-    	var oscillator;
-		var midi = null;  // global MIDIAccess object
-		var midiData = null;
-		var redAverage = 0;
-		var greenAverage = 0;
-		var blueAverage = 0;
-		var alphaAverage = 0;
+		var audioContext = new AudioContext();
+		var pixelGroups;
+		var schedule;
+		var img;
+		var canvas;
+		var imgContext;
 
 		function readURL(input) {
 		    if (input.files && input.files[0]) {
@@ -41,118 +40,86 @@ http://soundfonts.gonet.biz/search.php?goto=1&grupo=1 -->
 		    }
 		}
 
-		function onMIDIMessage (message) {
-			midiData = message.data;
-    		console.log("MIDI data", midiData);
-		}
-
-		function onMIDISuccess( midiAccess ) {
-			console.log( "MIDI ready!" );
-			midi = midiAccess;  // store in the global (in real usage, would probably keep in an object instance)
-			console.log(midi);
-			var inputs = midi.inputs.values();
-			for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
-    			console.log('in loop');
-    			// each time there is a midi message call the onMIDIMessage function
-    			input.value.onmidimessage = onMIDIMessage;
-    			var input = input.value;
-			    console.log("Input port : [ type:'" + input.type + "' id: '" + input.id +
-			        "' manufacturer: '" + input.manufacturer + "' name: '" + input.name +
-			        "' version: '" + input.version + "']");	
-			}
-		}
-
-		function onMIDIFailure(msg) {
-			console.log( "Failed to get MIDI access - " + msg );
-		}
-
-		function getMidi() {
-			// navigator.requestMIDIAccess().then( onMIDISuccess, onMIDIFailure );
-			if (navigator.requestMIDIAccess) {
-			    navigator.requestMIDIAccess({
-			        sysex: false
-			    }).then(onMIDISuccess, onMIDIFailure);
-			} else {
-			    alert("No MIDI support in your browser.");
-			}
-		}
-
 		function getImgData() {
-			var img = document.getElementById('user-img');
-			var canvas = document.createElement('canvas');
-			var context = canvas.getContext('2d');
+			img = document.getElementById('user-img');
+			canvas = document.createElement('canvas');
+			imgContext = canvas.getContext('2d');
 			canvas.width = img.width;
 			canvas.height = img.height;
-			context.drawImage(img, 0, 0);
-			var imageData = context.getImageData(0, 0, img.width, img.height);
-			var pixelData = imageData.data;
-			var numPixels = pixelData.length / 4;
-			var redSum = 0;
-			var greenSum = 0;
-			var blueSum = 0;
-			var alphaSum = 0;
+			imgContext.drawImage(img, 0, 0);
+			pixelGroups = [];
+			var x = width = y = height = 0;
 
-			for (i = 0; i < pixelData.length; i++) {
-				if (i % 4 == 0) { //red
-					redSum += pixelData[i];
-				} else if (i % 4 == 1) { //green
-					greenSum += pixelData[i];
-				} else if (i % 4 == 2) { //blue
-					blueSum += pixelData[i];
-				} else if (i % 4 == 3) { //alpha
-					alphaSum += pixelData[i];
+			//set x, y, width, and height here based on what sweeping pattern is used
+			//left to right:
+			width = img.width / 25;
+			console.log(width);
+			height = img.height;
+
+			//get averages for each chunk of pixels, and store in array
+			while (x < img.width) {
+				var imageData = imgContext.getImageData(x, y, width, height);
+				var pixelData = imageData.data;
+				var numPixels = pixelData.length / 4;
+				var redSum = greenSum = blueSum = alphaSum = 0;
+				var redAverage = greenAverage = blueAverage = alphaAverage = 0;
+
+				for (i = 0; i < pixelData.length; i++) {
+					if (i % 4 == 0) { //red
+						redSum += pixelData[i];
+					} else if (i % 4 == 1) { //green
+						greenSum += pixelData[i];
+					} else if (i % 4 == 2) { //blue
+						blueSum += pixelData[i];
+					} else if (i % 4 == 3) { //alpha
+						alphaSum += pixelData[i];
+					}
 				}
+				redAverage = redSum / numPixels;
+				greenAverage = greenSum / numPixels;
+				blueAverage = blueSum / numPixels;
+				alphaAverage = alphaSum / numPixels;
+
+				pixelGroups.push({
+					red: redAverage,
+					green: greenAverage,
+					blue: blueAverage,
+					alpha: alphaAverage
+				});
+
+				//set new x, y, width, and height here. This will also differ depending
+				//on the sweeping pattern
+				x += width;
 			}
-
-			redAverage = redSum / numPixels;
-			greenAverage = greenSum / numPixels;
-			blueAverage = blueSum / numPixels;
-			alphaAverage = alphaSum / numPixels;
-
-			console.log("red ave: " + redAverage + "\n");
-			console.log("green ave: " + greenAverage + "\n");
-			console.log("blue ave: " + blueAverage + "\n");
-			console.log("alpha ave: " + alphaAverage + "\n");
-		}
-
-		function playNote (frequency, noteLength) {
-			//start playing the note
-		    oscillator = context.createOscillator();
-		    oscillator.frequency.value = frequency;
-		    oscillator.connect(context.destination);
-		    oscillator.start(context.currentTime);
-
-		    //stop playing the note after some length of time
-		    oscillator.stop(context.currentTime + noteLength);
-		    //oscillator.disconnect();
 		}
  
-		// function stopNote (frequency) {
-		//     oscillators[frequency].stop(context.currentTime);
-		//     oscillators[frequency].disconnect();
-		// }
-
 		function play() {
-			var frequency = Math.floor(redAverage % 88) + 21;
-			console.log(redAverage);
-			var noteLength = getNoteLength(greenAverage);
-			//playNote(redAverage, noteLength);
- 			//stopNote(redAverage);
+			schedule = [];
+			var clock = 0;
+			for (var i = 0; i < pixelGroups.length; i++) {
+				var frequency = Math.floor(pixelGroups[i].red % 88) + 21;
+				var noteLength = getNoteLength(pixelGroups[i].green);
+				schedule.push({
+					time: clock,
+					note: frequency
+				});
+				clock += noteLength;
+			}
 
- 			// plays notes in the midi note range 21 - 108 (inclusive)
- 			Soundfont.instrument(context, 'acoustic_grand_piano').then(function (piano) {
-  				piano.play(frequency, context.currentTime, { duration: noteLength})
+			for (var i = 0; i < schedule.length; i++) {
+				console.log("time: " + schedule[i].time + "note: " + schedule[i].note);
+			}			
+
+ 			//plays notes in the midi note range 21 - 108 (inclusive)
+ 			Soundfont.instrument(audioContext, 'acoustic_grand_piano').then(function (piano) {
+  				piano.schedule(audioContext.currentTime, schedule)
 			});
+			
 		}
 
 		function getNoteLength(greenAverage) {
-			return (greenAverage % 5) + 1;
+			return (greenAverage % 2) + 1;
 		}
-
-		// function stop() {
-		// 	console.log(redAverage);
-		// 	stopNote(redAverage);
-		// }
 
 	</script>
 
