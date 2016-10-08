@@ -23,7 +23,6 @@ http://soundfonts.gonet.biz/search.php?goto=1&grupo=1 -->
 
 	<script>
 		var audioContext = new AudioContext();
-		var pixelGroups;
 		var schedule;
 		var img;
 		var canvas;
@@ -40,25 +39,39 @@ http://soundfonts.gonet.biz/search.php?goto=1&grupo=1 -->
 		    }
 		}
 
-		function getImgData() {
+		function play() {
 			img = document.getElementById('user-img');
+			if(img.getAttribute('src') == '#') {
+				alert("Please upload an image before playing.");
+				return;
+			}
+			var sweep;
+			if (document.getElementById('left-to-right').checked) {
+				sweep = 'left-to-right';
+			} else if (document.getElementById('other').checked) {
+				sweep = 'other';
+			} else {
+				alert("Please select a sweeping pattern before playing.");
+				return;
+			}
+			var pixelGroups = getImgData(img, sweep);
+			playNotes(pixelGroups);
+		}
+
+		function getImgData(img, sweep) {
 			canvas = document.createElement('canvas');
 			imgContext = canvas.getContext('2d');
 			canvas.width = img.width;
 			canvas.height = img.height;
 			imgContext.drawImage(img, 0, 0);
-			pixelGroups = [];
-			var x = width = y = height = 0;
+			var pixelGroups = [];
 
 			//set x, y, width, and height here based on what sweeping pattern is used
-			//left to right:
-			width = img.width / 25;
-			console.log(width);
-			height = img.height;
+			var reqs = getSweepRequirements(img, sweep);
 
 			//get averages for each chunk of pixels, and store in array
-			while (x < img.width) {
-				var imageData = imgContext.getImageData(x, y, width, height);
+			while (reqs.x < img.width) {
+				var imageData = imgContext.getImageData(reqs.x, reqs.y, reqs.width, reqs.height);
 				var pixelData = imageData.data;
 				var numPixels = pixelData.length / 4;
 				var redSum = greenSum = blueSum = alphaSum = 0;
@@ -89,11 +102,34 @@ http://soundfonts.gonet.biz/search.php?goto=1&grupo=1 -->
 
 				//set new x, y, width, and height here. This will also differ depending
 				//on the sweeping pattern
-				x += width;
+				reqs = updateSweepRequirements(img, sweep, reqs);
+			}
+			return pixelGroups;
+		}
+
+		function getSweepRequirements(img, sweep) {
+			if (sweep == 'left-to-right') {
+				return {
+					x: 0,
+					y: 0,
+					width: img.width / 25,
+					height: img.height
+				};
+			}
+		}
+
+		function updateSweepRequirements(img, sweep, currentReqs) {
+			if (sweep == 'left-to-right') {
+				return {
+					x: currentReqs.x += currentReqs.width,
+					y: 0,
+					width: img.width / 25,
+					height: img.height
+				};
 			}
 		}
  
-		function play() {
+		function playNotes(pixelGroups) {
 			schedule = [];
 			var clock = 0;
 			for (var i = 0; i < pixelGroups.length; i++) {
@@ -132,8 +168,11 @@ http://soundfonts.gonet.biz/search.php?goto=1&grupo=1 -->
     	<input type="file" id="image-input" onchange="readURL(this);"/> <br>
     	<img id="user-img" src="#" alt="your uploaded image"/> <br>
  	   	<button id="midi-btn" onclick="getMidi()">Get Midi Access</button>
-	 	<button id="img-data-btn" onclick="getImgData()">Get Image Data</button>
-	 	<button id="play-btn" onclick="play()">Play</button>
+ 	   	Left to Right: <input type="radio" id="left-to-right">
+ 	   	Other: <input type="radio" id="other">
+ 	   	<button id="play-btn" onclick="play()">Play</button>
+	 	<!-- <button id="img-data-btn" onclick="getImgData()">Get Image Data</button>
+	 	<button id="play-notes-btn" onclick="playNotes()">Play</button> -->
 	 	<!-- <button id="stop-btn" onclick="stop()">Stop</button> -->
 	</div>
 </body>
