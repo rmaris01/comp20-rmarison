@@ -3,10 +3,27 @@
 https://code.tutsplus.com/tutorials/introduction-to-web-midi--cms-25220
 https://code.tutsplus.com/series/the-web-audio-api--cms-817
 https://webaudio.github.io/web-midi-api/#conformance 
-https://www.npmjs.com/package/soundfont-player -->
+https://www.npmjs.com/package/soundfont-player 
+https://github.com/gleitz/midi-js-soundfonts
+https://github.com/mudcube/MIDI.js
+https://github.com/Theodeus/tuna
+-->
 
-<!-- soundfonts:
-http://soundfonts.gonet.biz/search.php?goto=1&grupo=1 -->
+<!-- 
+aspects of the music:
+-let user select key
+-RGB ave value (r + g + b) / 3 but put into better range : pitch
+- dominating rgb value = pitch
+- three different instruments for pitch, each from rgb (play a chord)
+-RGB percentage within 255 range, ((r + g + b) / (255*3)) * 1500, where 1500 is max number of ms that I want : duration
+-size of image/size of pixel group: duration?
+-duration: based on one of rgb, user gets to choose which one
+-RED: ?
+-GREEN: ?
+-BLUE: ?
+-APLHA: key?
+-LUM: effects and also major/minor key (if in lower half then minor, else major) 
+-->
 
 <html>
 
@@ -49,6 +66,13 @@ http://soundfonts.gonet.biz/search.php?goto=1&grupo=1 -->
 		var canvas;
 		var imgContext;
 
+		/* These arrays contain the required mod results to be in the specified key.
+		   For example, if the note % 12 == 0, then it's the note C. 
+		   If the note % 12 == 1, then it's the note C#/Db */
+		   
+		// [C, D, E, F, G, A, B]
+		var KeyOfC = []
+
 
 		function readURL(input) {
 		    if (input.files && input.files[0]) {
@@ -83,8 +107,8 @@ http://soundfonts.gonet.biz/search.php?goto=1&grupo=1 -->
 			canvas.height = img.height;
 			imgContext.drawImage(img, 0, 0);
 			var pixelGroups = getImgData(img, sweep, imgContext);
-			var luminosity = getLuminosity(imgContext, img);
-			playNotes(pixelGroups, luminosity);
+			//var luminosity = getLuminosity(imgContext, img);
+			playSong(pixelGroups);
 		}
 
 		function getImgData(img, sweep, imgContext) {
@@ -110,11 +134,11 @@ http://soundfonts.gonet.biz/search.php?goto=1&grupo=1 -->
 			return pixelGroups;
 		}
 
-		function getLuminosity(imgContext, img) {
-			var reqs = getSweepRequirements(img, 'entire');
-			averages = getRGBAverages(reqs, imgContext);
-			return (0.2126*averages.red + 0.7152*averages.green + 0.0722*averages.blue);
-		}
+		// function getLuminosity(imgContext, img) {
+		// 	var reqs = getSweepRequirements(img, 'entire');
+		// 	averages = getRGBAverages(reqs, imgContext);
+		// 	return (0.2126*averages.red + 0.7152*averages.green + 0.0722*averages.blue);
+		// }
 
 		function getRGBAverages(reqs, imgContext) {
 			var imageData = imgContext.getImageData(reqs.x, reqs.y, reqs.width, reqs.height);
@@ -156,13 +180,6 @@ http://soundfonts.gonet.biz/search.php?goto=1&grupo=1 -->
 						width: img.width / 25,
 						height: img.height
 					};
-				case 'entire':
-					return {
-						x: 0,
-						y: 0,
-						width: img.width,
-						height: img.height
-					};
 			}
 		}
 
@@ -177,8 +194,8 @@ http://soundfonts.gonet.biz/search.php?goto=1&grupo=1 -->
 			}
 		}
  
-		function playNotes(pixelGroups, luminosity) {
-			console.log(luminosity);
+		function playSong(pixelGroups) {
+			// console.log(luminosity);
 			// schedule = [];
 			// var clock = 0;
 			
@@ -192,64 +209,69 @@ http://soundfonts.gonet.biz/search.php?goto=1&grupo=1 -->
 			// 	clock += noteLength;
 			// }
 
-			notesAndDurations = [];
-			
-			for (var i = 0; i < pixelGroups.length; i++) {
-				var frequency = Math.floor(pixelGroups[i].red % 88) + 21;
-				var duration = getNoteLength(pixelGroups[i].green);
-				notesAndDurations.push({
-					duration: duration,
-					note: frequency
-				});
-			}
-
-			for (var i = 0; i < notesAndDurations.length; i++) {
-				console.log("note: " + notesAndDurations[i].note);
-			}			
-
- 		// 	//plays notes in the midi note range 21 - 108 (inclusive)
  		// 	Soundfont.instrument(audioContext, 'acoustic_grand_piano', {attack: 0}).then(function (piano) {
   	// 			piano.schedule(audioContext.currentTime, schedule)
 			// });
+
+			notesData = [];
+			
+			for (var i = 0; i < pixelGroups.length; i++) {
+				// var frequency = Math.floor(pixelGroups[i].red % 88) + 21;
+				var redNote = getPitchInKey(pixelGroups[i].red);
+				var greenNote = getPitchInKey(pixelGroups[i].green);
+				var blueNote = getPitchInKey(pixelGroups[i].blue);
+
+				//getPitch(pixelGroups[i].red, pixelGroups[i].green, pixelGroups[i].blue);
+				var duration = getNoteLength(pixelGroups[i].green);
+				var luminosity = 0.2126*pixelGroups[i].red + 0.7152*pixelGroups[i].green + 0.0722*pixelGroups[i].blue;
+
+				notesData.push({
+					redNote: redNote,
+					greenNote: greenNote,
+					blueNote: blueNote,
+					duration: duration,
+					lum: luminosity
+				});
+			}
+
+			for (var i = 0; i < notesData.length; i++) {
+				console.log("redNote: " + notesData[i].redNote);
+				console.log("greenNote: " + notesData[i].greenNote);
+				console.log("blueNote: " + notesData[i].blueNote);
+				//console.log("duration: " + notesData[i].duration);
+				console.log("");
+			}			
 
 			MIDI.loadPlugin({
 			    soundfontUrl: "http://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/",
 			    instrument: "acoustic_grand_piano",
 			    onsuccess: function() {
-			    	filter()
-			    	playNote(0, notesAndDurations);
-			    	
-			   //  		var frequency = Math.floor(pixelGroups[i].red % 88) + 21;
-						// var noteLength = getNoteLength(pixelGroups[i].green);
-				  //       var delay = 0; // play one note every quarter second
-				  //       var velocity = 127; // how hard the note hits
-				  //       // play the note
-				  //       MIDI.setVolume(0, 127);
-
-				  //       filter()
-				  //       MIDI.noteOn(0, frequency, velocity, delay);
-				  //       sleep(750).then(() => {
-				  //       	MIDI.noteOff(0, frequency, delay + 0.75);
-				  //       	play_note();
-				  //       });
-			    	
+			    	playNotes(0, notesData);
 			    }
 			});
 		}
 
-		function playNote(i, notesAndDurations) {
-			if (i < notesAndDurations.length) {
-				// var frequency = Math.floor(pixelGroups[i].red % 88) + 21;
-				// var noteLength = getNoteLength(pixelGroups[i].green);
-		        var delay = 0; // play one note every quarter second
-		        var velocity = 127; // how hard the note hits
-		        // play the note
-		        MIDI.setVolume(0, 127);
+		function getPitchInKey(rgbVal) {
+			//plays notes in the midi note range 21 - 108 (inclusive)
+			var note = Math.floor(rgbVal % 88) + 21;
+			return note;
+		}
 
-		        MIDI.noteOn(0, notesAndDurations[i].note, velocity, delay);
-		        sleep(notesAndDurations[i].duration).then(() => {
-		        	MIDI.noteOff(0, notesAndDurations[i].note, delay + notesAndDurations[i].duration);
-		        	playNote(i+1, notesAndDurations);
+		function playNotes(i, notesData) {
+			if (i < notesData.length) {
+				setFilters(notesData[i].lum);
+
+		        var delay = 0; 
+		        var velocity = 127; 
+		        MIDI.setVolume(0, 127);
+		        MIDI.noteOn(0, notesData[i].redNote, velocity, delay);
+		        MIDI.noteOn(0, notesData[i].greenNote, velocity, delay);
+		        MIDI.noteOn(0, notesData[i].blueNote, velocity, delay);
+		        sleep(notesData[i].duration).then(() => {
+		        	MIDI.noteOff(0, notesData[i].redNote, delay + notesData[i].duration);
+		        	MIDI.noteOff(0, notesData[i].greenNote, delay + notesData[i].duration);
+		        	MIDI.noteOff(0, notesData[i].blueNote, delay + notesData[i].duration);
+		        	playNotes(i+1, notesData);
 		        });
 			}
 		}
@@ -258,14 +280,23 @@ http://soundfonts.gonet.biz/search.php?goto=1&grupo=1 -->
 			return new Promise(resolve => setTimeout(resolve, ms));
 		}
 
+		function setFilters(lum) {
+			//console.log("lum: " + lum);
+			if (lum <= 42.5) { // highest lum is 255, and 255 split into 6 groups is 42.5 per group
+				excursion = 1;
+			} else {
+				excursion = Math.ceil(lum / 42.5); 
+			}
+			//console.log("ex: " + excursion);
+			sweep = lum % 1;
+			//console.log("sweep: " + sweep);
 
-		function filter() {
 			MIDI.setEffects([{
 				type: "WahWah",
 		        automode: true, // true/false
 		        baseFrequency: 0.5, // 0 to 1
-		        excursionOctaves: 2, // 1 to 6
-		        sweep: 0.2, // 0 to 1
+		        excursionOctaves: excursion, // 1 to 6
+		        sweep: sweep, // 0 to 1
 		        resonance: 10, // 1 to 100
 		        sensitivity: 0.5, // -1 to 1
 		        bypass: 0
