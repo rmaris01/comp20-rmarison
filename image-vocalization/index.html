@@ -38,10 +38,10 @@ aspects of the music:
 	
 	<script src="soundfont-player.min.js"></script>
 	<script type="text/javascript" src="midiAccess.js"></script>
-	<script type="text/javascript" src="sweepController.js"></script>
-	<script type="text/javascript" src="readPixelData.js"></script>
+	<script type="text/javascript" src="SweepController.js"></script>
+	<script type="text/javascript" src="PixelReader.js"></script>
 	<script type="text/javascript" src="MelodyAttributeController.js"></script>
-	<script type="text/javascript" src="playMelodies.js"></script>
+	<script type="text/javascript" src="MelodyPlayer.js"></script>
 	
 	<script src="MIDI/MIDI.min.js"></script>
 	<script src="MIDI/Base64.js" type="text/javascript"></script>
@@ -81,16 +81,23 @@ aspects of the music:
 		<hr>
     	<input type="file" id="image-input" onchange="readURL(this);"/> <br>
     	<img id="user-img" src="#" alt="your uploaded image"/> <br>
- 	   	<button id="midi-btn" onclick="getMidi()">Get Midi Access</button>
- 	   	Left to Right: <input type="radio" id="left-to-right">
- 	   	Other: <input type="radio" id="other">
+ 	   	<!-- <button id="midi-btn" onclick="getMidi()">Get Midi Access</button> -->
+ 	   	
+ 	   	<form id="sweep-form">
+	 	   	Left to Right: <input type="radio" name="sweeps" id="left-to-right" value="left-to-right">
+	 	   	Other: <input type="radio" name="sweeps" id="other" value="other">
+ 	   	</form>
+
  	   	<button id="play-btn" onclick="play()">Play</button>
 	 	<hr>
-	 	<p> Choose a key to play in: </p>
-	 	C: <input type="radio" id="keyOfC" name="keys">
-	 	G: <input type="radio" id="keyOfG" name="keys">
-	 	D: <input type="radio" id="keyOfD" name="keys">
-	 	A: <input type="radio" id="keyOfA" name="keys">
+
+	 	<form id="key-form">
+		 	<p> Choose a key to play in: </p>
+		 	C: <input type="radio" id="keyOfC" value="keyOfC">
+		 	G: <input type="radio" id="keyOfG" value="keyOfG">
+		 	D: <input type="radio" id="keyOfD" value="keyOfD">
+		 	A: <input type="radio" id="keyOfA" value="keyOfA">
+	 	</form>
 
 	</div>
 </body>

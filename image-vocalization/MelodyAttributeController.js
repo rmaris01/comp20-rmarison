@@ -14,13 +14,12 @@ var keyOfD = [2, 4, 6, 7, 9, 11, 1];
 // [A, B, C#, D, E, F#, G#]
 var keyOfA = [9, 11, 1, 2, 4, 6, 8];
 
-function getPitchInKey(rgbVal) {
+function getPitchInKey(rgbVal, key) {
 	//plays notes in the midi note range 21 - 108 (inclusive)
 	var note = Math.floor(rgbVal % 88) + 21;
 	var scaleDegree = note % 12;
-	var keyArray = window[document.querySelector('input[name="keys"]:checked').id];
-	note = getNoteInSpecifiedKey(keyArray, scaleDegree, note);
-
+	var keyArray = window[key];
+    note = getNoteInSpecifiedKey(keyArray, scaleDegree, note);
 	return note;
 }
 
