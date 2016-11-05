@@ -1,7 +1,8 @@
 function getSweepRequirements(img, sweep) {
-	var verticalWidth = img.width / 25;
-	var horizontalHeight = img.height / 25;
+	var verticalWidth = Math.ceil(img.width / 25);
+	var horizontalHeight = Math.ceil(img.height / 25);
 	switch(sweep) {
+		case 'right-to-left':
 		case 'left-to-right':
 			return {
 				x: 0,
@@ -9,20 +10,22 @@ function getSweepRequirements(img, sweep) {
 				width: verticalWidth,
 				height: img.height
 			};
-		case 'right-to-left':
+		case 'bottom-to-top':
+		case 'top-to-bottom':
 			return {
-				x: img.width - verticalWidth,
+				x: 0,
 				y: 0,
-				width: verticalWidth,
-				height: img.height
+				width: img.width,
+				height: horizontalHeight
 			};
 	}
 }
 
 function updateSweepRequirements(img, sweep, currentReqs) {
-	var verticalWidth = img.width / 25;
-	var horizontalHeight = img.height / 25;
+	var verticalWidth = Math.ceil(img.width / 25);
+	var horizontalHeight = Math.ceil(img.height / 25);
 	switch(sweep) {
+		case 'right-to-left':
 		case 'left-to-right':
 			return {
 				x: currentReqs.x += currentReqs.width,
@@ -30,21 +33,24 @@ function updateSweepRequirements(img, sweep, currentReqs) {
 				width: verticalWidth,
 				height: img.height
 			};
-		case 'right-to-left':
+		case 'bottom-to-top':
+		case 'top-to-bottom':
 			return {
-				x: currentReqs.x -= currentReqs.width,
-				y: 0,
-				width: verticalWidth,
-				height: img.height
+				x: 0,
+				y: currentReqs.y += currentReqs.height,
+				width: img.width,
+				height: horizontalHeight
 			};
 	}
 }
 
 function stillSweeping(reqs, img) {
 	switch(sweep) {
+		case 'right-to-left':
 		case 'left-to-right':
 			return (reqs.x < img.width);
-		case 'right-to-left':
-			return (reqs.x >= 0)
+		case 'bottom-to-top':
+		case 'top-to-bottom':
+			return (reqs.y < img.height);
 	}
 }

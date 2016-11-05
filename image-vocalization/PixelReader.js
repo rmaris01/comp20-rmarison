@@ -5,7 +5,6 @@ function getImgData(img, sweep, imgContext) {
 
 	//get averages for each chunk of pixels, and store in array
 	while (stillSweeping(reqs, img)) {
-	//while (reqs.x < img.width) {
 		var averages = getRGBAverages(reqs, imgContext);
 		pixelGroups.push({
 			red: averages.red,
@@ -18,10 +17,14 @@ function getImgData(img, sweep, imgContext) {
 		//on the sweeping pattern
 		reqs = updateSweepRequirements(img, sweep, reqs);
 	}
+	pixelGroups = adjustPixelGroupOrder(pixelGroups, sweep);
+	console.log(pixelGroups.length);
 	return pixelGroups;
 }
 
 function getRGBAverages(reqs, imgContext) {
+	console.log("y: " + reqs.y);
+
 	var imageData = imgContext.getImageData(reqs.x, reqs.y, reqs.width, reqs.height);
 	var pixelData = imageData.data;
 	var numPixels = pixelData.length / 4;
@@ -50,4 +53,15 @@ function getRGBAverages(reqs, imgContext) {
 		blue: blueAverage,
 		alpha: alphaAverage
 	};
+}
+
+function adjustPixelGroupOrder(pixelGroups, sweep) {
+	switch (sweep) {
+		case 'right-to-left':
+		case 'bottom-to-top':
+		console.log('here');
+			return pixelGroups.reverse();
+		default:
+			return pixelGroups;
+	}
 }
