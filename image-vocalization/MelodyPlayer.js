@@ -54,7 +54,7 @@ function createAndPlayMelody(pixelGroups, key) {
 		var redNote = getPitchInKey(pixelGroups[i].red, key);
 		var greenNote = getPitchInKey(pixelGroups[i].green, key);
 		var blueNote = getPitchInKey(pixelGroups[i].blue, key);
-		var duration = getNoteLength(pixelGroups[i].green);
+		var duration = getNoteLength(notesData, pixelGroups, i);
 		var luminosity = 0.2126*pixelGroups[i].red + 0.7152*pixelGroups[i].green + 0.0722*pixelGroups[i].blue;
 
 		notesData.push({
@@ -99,6 +99,8 @@ function playNotes(i, notesData) {
         	MIDI.noteOff(0, notesData[i].blueNote, delay + notesData[i].duration);
         	playNotes(i+1, notesData);
         });
+	} else {
+			console.log('done');
 	}
 }
 
