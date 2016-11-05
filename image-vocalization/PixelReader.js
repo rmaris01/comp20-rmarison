@@ -4,7 +4,8 @@ function getImgData(img, sweep, imgContext) {
 	var pixelGroups = [];
 
 	//get averages for each chunk of pixels, and store in array
-	while (reqs.x < img.width) {
+	while (stillSweeping(reqs, img)) {
+	//while (reqs.x < img.width) {
 		var averages = getRGBAverages(reqs, imgContext);
 		pixelGroups.push({
 			red: averages.red,
@@ -17,7 +18,6 @@ function getImgData(img, sweep, imgContext) {
 		//on the sweeping pattern
 		reqs = updateSweepRequirements(img, sweep, reqs);
 	}
-
 	return pixelGroups;
 }
 
