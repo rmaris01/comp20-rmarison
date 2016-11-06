@@ -43,28 +43,25 @@ function getNoteLength(notesData, pixelGroups, i) {
         var prevLum = notesData[i - 1].lum;
         delta = Math.abs(prevLum - currentLum);  //delta will be in the range of 0 to 255
     }
-    console.log("delta: " + ((255 - delta) / 212.5) * 1000)
+    //console.log("delta: " + ((255 - delta) / 212.5) * 1000)
     //return (delta % 1.2) * 1000;
     return ((255 - delta) / 212.5) * 1000; // 255 split into 1.2 groups is 212.5 per group
 }
 
 function setFilters(lum) {
-    console.log("lum: " + lum);
     excursion = lum / 42.5; // highest lum is 255, and 255 split into 6 groups is 42.5 per group
-    baseFreq = (255 - lum) / 255; // split 255 into two groups
+    //baseFreq = (255 - lum) / 255; // split 255 into two groups
     intensity = lum / 127.5; // highest lum is 255, and 255 split into 2 groups is 127.5 per group
     rate = lum / 31.875 // highest lum is 255, and 255 split into 8 groups is 31.875 per group
-    console.log("baseFreq: " + baseFreq + " excursion: " + excursion);
-    //console.log("intensity: " + intensity + " rate: " + rate);
-    console.log("");
+
     MIDI.setEffects([
-        {
-            type: "Tremolo",
-            intensity: intensity, // 0 to 1
-            rate: rate, // 0.001 to 8
-            stereoPhase: 0, // 0 to 180
-            bypass: 0
-        },
+        // {
+        //     type: "Tremolo",
+        //     intensity: intensity, // 0 to 1
+        //     rate: rate, // 0.001 to 8
+        //     stereoPhase: 0, // 0 to 180
+        //     bypass: 0
+        // },
         {
             type: "WahWah",
             automode: true, // true/false

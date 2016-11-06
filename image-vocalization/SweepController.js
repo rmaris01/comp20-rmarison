@@ -18,6 +18,13 @@ function getSweepRequirements(img, sweep) {
 				width: img.width,
 				height: horizontalHeight
 			};
+		case 'blocked':
+			return {
+				x: 0,
+				y: 0,
+				width: 25,
+				height: 25
+			};
 	}
 }
 
@@ -41,6 +48,29 @@ function updateSweepRequirements(img, sweep, currentReqs) {
 				width: img.width,
 				height: horizontalHeight
 			};
+		case 'blocked':
+			if (currentReqs.x + 25 >= img.width && currentReqs.y + 25 >= img.height) {
+				return {
+					x: currentReqs.x + 25,
+					y: currentReqs.y + 25,
+					width: 25,
+					height: 25
+				};
+			} else if (currentReqs.x + 25 >= img.width) {
+				return {
+					x: 0,
+					y: currentReqs.y + 25,
+					width: 25,
+					height: 25
+				};
+			} else {
+				return {
+					x: currentReqs.x + 25,
+					y: currentReqs.y,
+					width: 25,
+					height: 25
+				};
+			}
 	}
 }
 
@@ -52,5 +82,7 @@ function stillSweeping(reqs, img) {
 		case 'bottom-to-top':
 		case 'top-to-bottom':
 			return (reqs.y < img.height);
+		case 'blocked':
+			return (reqs.x < img.width || reqs.y < img.height) //stop when you're in the bottom left corner 
 	}
 }

@@ -67,10 +67,10 @@ function createAndPlayMelody(pixelGroups, key) {
 	}
 
 	// for (var i = 0; i < notesData.length; i++) {
-	// 	console.log("redNote: " + notesData[i].redNote);
-	// 	console.log("greenNote: " + notesData[i].greenNote);
-	// 	console.log("blueNote: " + notesData[i].blueNote);
-	// 	//console.log("duration: " + notesData[i].duration);
+	// 	// console.log("redNote: " + notesData[i].redNote);
+	// 	// console.log("greenNote: " + notesData[i].greenNote);
+	// 	// console.log("blueNote: " + notesData[i].blueNote);
+	// 	console.log("duration: " + notesData[i].duration);
 	// 	console.log("");
 	// }			
 
