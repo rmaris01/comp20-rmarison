@@ -1,6 +1,11 @@
 function getSweepRequirements(img, sweep) {
 	var verticalWidth = Math.ceil(img.width / 25);
 	var horizontalHeight = Math.ceil(img.height / 25);
+	var verticalWidthBlocked = Math.ceil(img.width / 5);
+	var horizontalHeightBlocked = Math.ceil(img.height / 5);
+	console.log("v: " + verticalWidthBlocked);
+	console.log("h: " + horizontalHeightBlocked);
+
 	switch(sweep) {
 		case 'right-to-left':
 		case 'left-to-right':
@@ -22,8 +27,8 @@ function getSweepRequirements(img, sweep) {
 			return {
 				x: 0,
 				y: 0,
-				width: 25,
-				height: 25
+				width: verticalWidthBlocked,
+				height: horizontalHeightBlocked
 			};
 	}
 }
@@ -31,6 +36,8 @@ function getSweepRequirements(img, sweep) {
 function updateSweepRequirements(img, sweep, currentReqs) {
 	var verticalWidth = Math.ceil(img.width / 25);
 	var horizontalHeight = Math.ceil(img.height / 25);
+	var verticalWidthBlocked = Math.ceil(img.width / 5);
+	var horizontalHeightBlocked = Math.ceil(img.height / 5);
 	switch(sweep) {
 		case 'right-to-left':
 		case 'left-to-right':
@@ -49,26 +56,26 @@ function updateSweepRequirements(img, sweep, currentReqs) {
 				height: horizontalHeight
 			};
 		case 'blocked':
-			if (currentReqs.x + 25 >= img.width && currentReqs.y + 25 >= img.height) {
+			if (currentReqs.x + verticalWidthBlocked >= img.width && currentReqs.y + horizontalHeightBlocked >= img.height) {
 				return {
-					x: currentReqs.x + 25,
-					y: currentReqs.y + 25,
-					width: 25,
-					height: 25
+					x: currentReqs.x + verticalWidthBlocked,
+					y: currentReqs.y + horizontalHeightBlocked,
+					width: verticalWidthBlocked,
+					height: horizontalHeightBlocked
 				};
-			} else if (currentReqs.x + 25 >= img.width) {
+			} else if (currentReqs.x + verticalWidthBlocked >= img.width) {
 				return {
 					x: 0,
-					y: currentReqs.y + 25,
-					width: 25,
-					height: 25
+					y: currentReqs.y + horizontalHeightBlocked,
+					width: verticalWidthBlocked,
+					height: horizontalHeightBlocked
 				};
 			} else {
 				return {
-					x: currentReqs.x + 25,
+					x: currentReqs.x + verticalWidthBlocked,
 					y: currentReqs.y,
-					width: 25,
-					height: 25
+					width: verticalWidthBlocked,
+					height: horizontalHeightBlocked
 				};
 			}
 	}

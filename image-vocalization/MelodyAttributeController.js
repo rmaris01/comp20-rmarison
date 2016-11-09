@@ -17,7 +17,7 @@ var keyOfA = [9, 11, 1, 2, 4, 6, 8];
 function getPitchInKey(rgbVal, key) {
 	//plays notes in the midi note range 21 - 108 (inclusive)
 	var note = Math.floor((rgbVal / 2.93) + 21); // 255 split into 87 groups is 2.93 per group
-    //before was rgbVal % 88 + 21
+    //var note = Math.floor(rgbVal % 88) + 21;
 	var scaleDegree = note % 12;
 	var keyArray = window[key];
     note = getNoteInSpecifiedKey(keyArray, scaleDegree, note);
@@ -43,14 +43,18 @@ function getNoteLength(notesData, pixelGroups, i) {
         var prevLum = notesData[i - 1].lum;
         delta = Math.abs(prevLum - currentLum);  //delta will be in the range of 0 to 255
     }
-    //console.log("delta: " + ((255 - delta) / 212.5) * 1000)
-    //return (delta % 1.2) * 1000;
-    return ((255 - delta) / 212.5) * 1000; // 255 split into 1.2 groups is 212.5 per group
+    //console.log("delta: " + ((255 - delta) / 255) * 1000)
+    //return (delta % 1.2) * 1000; //version 1
+    // var test = Math.ceil(delta / 63.75); //v3
+    // console.log("test: " + test);
+     console.log("delta: " + ((255 - delta) / 63.75) * 100);
+    // return 1000 / test; //v3
+    return ((255 - delta) / 63.75) * 100; // v2: 255 split into 1.2 groups is 212.5 per group
 }
 
 function setFilters(lum) {
     excursion = lum / 42.5; // highest lum is 255, and 255 split into 6 groups is 42.5 per group
-    //baseFreq = (255 - lum) / 255; // split 255 into two groups
+    baseFreq = (255 - lum) / 255; // split 255 into two groups
     intensity = lum / 127.5; // highest lum is 255, and 255 split into 2 groups is 127.5 per group
     rate = lum / 31.875 // highest lum is 255, and 255 split into 8 groups is 31.875 per group
 

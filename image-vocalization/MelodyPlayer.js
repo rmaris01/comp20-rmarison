@@ -1,6 +1,7 @@
 var img;
 var sweep;
 var key;
+var currentTimeout;
 
 function play() {
 	var canvas;
@@ -70,7 +71,7 @@ function createAndPlayMelody(pixelGroups, key) {
 	// 	// console.log("redNote: " + notesData[i].redNote);
 	// 	// console.log("greenNote: " + notesData[i].greenNote);
 	// 	// console.log("blueNote: " + notesData[i].blueNote);
-	// 	console.log("duration: " + notesData[i].duration);
+	// 	//console.log("duration: " + notesData[i].duration);
 	// 	console.log("");
 	// }			
 
@@ -83,21 +84,23 @@ function createAndPlayMelody(pixelGroups, key) {
 	});
 }
 
+
+//maybe use jsmidi?
 function playNotes(i, notesData) {
+	// if (currentTimeout) {
+	// 	clearTimeout(currentTimeout);
+	// }
 	if (i < notesData.length) {
 		setFilters(notesData[i].lum);
-
+		
         var delay = 0; 
         var velocity = 127; 
         MIDI.setVolume(0, 127);
-        MIDI.noteOn(0, notesData[i].redNote, velocity, delay);
-        MIDI.noteOn(0, notesData[i].greenNote, velocity, delay);
-        MIDI.noteOn(0, notesData[i].blueNote, velocity, delay);
+        MIDI.chordOn(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], velocity, delay);
+    	MIDI.chordOff(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], notesData[i].duration);
         sleep(notesData[i].duration).then(() => {
-        	MIDI.noteOff(0, notesData[i].redNote, delay + notesData[i].duration);
-        	MIDI.noteOff(0, notesData[i].greenNote, delay + notesData[i].duration);
-        	MIDI.noteOff(0, notesData[i].blueNote, delay + notesData[i].duration);
-        	playNotes(i+1, notesData);
+    	//currentTimeout = setTimeout(function() { playNotes(i+1, notesData); }, notesData[i].duration);
+    	playNotes(i+1, notesData);
         });
 	} else {
 			console.log('done');
