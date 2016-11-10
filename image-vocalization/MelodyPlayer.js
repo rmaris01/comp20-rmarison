@@ -98,10 +98,9 @@ function playNotes(i, notesData) {
         MIDI.setVolume(0, 127);
         MIDI.chordOn(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], velocity, delay);
     	MIDI.chordOff(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], notesData[i].duration);
-        sleep(notesData[i].duration).then(() => {
-    	//currentTimeout = setTimeout(function() { playNotes(i+1, notesData); }, notesData[i].duration);
-    	playNotes(i+1, notesData);
-        });
+        //sleep(notesData[i].duration).then(() => {
+    	setTimeout(function() { playNotes(i+1, notesData); }, notesData[i].duration);
+        //});
 	} else {
 			console.log('done');
 	}
