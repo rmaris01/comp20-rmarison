@@ -79,28 +79,21 @@ function createAndPlayMelody(pixelGroups, key) {
 	    soundfontUrl: "http://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/",
 	    instrument: "acoustic_grand_piano",
 	    onsuccess: function() {
-	    	playNotes(0, notesData);
+	    	playNotes(0, 0, notesData);
 	    }
 	});
 }
 
-
-//maybe use jsmidi?
-function playNotes(i, notesData) {
-	// if (currentTimeout) {
-	// 	clearTimeout(currentTimeout);
-	// }
+function playNotes(i, clockDelay, notesData) {
 	if (i < notesData.length) {
 		setFilters(notesData[i].lum);
 		
-        var delay = 0; 
         var velocity = 127; 
         MIDI.setVolume(0, 127);
-        MIDI.chordOn(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], velocity, delay);
-    	MIDI.chordOff(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], notesData[i].duration);
-        //sleep(notesData[i].duration).then(() => {
-    	setTimeout(function() { playNotes(i+1, notesData); }, notesData[i].duration);
-        //});
+        MIDI.chordOn(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], velocity, clockDelay);
+    	MIDI.chordOff(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], clockDelay + notesData[i].duration);
+    	clockDelay += notesData[i].duration;
+    	playNotes(i+1, clockDelay, notesData);
 	} else {
 			console.log('done');
 	}
