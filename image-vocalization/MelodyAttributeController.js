@@ -37,26 +37,27 @@ function getNoteInSpecifiedKey(keyArray, scaleDegree, note) {
 function getNoteLength(notesData, pixelGroups, i) {
     var delta;
     var currentLum = 0.2126*pixelGroups[i].red + 0.7152*pixelGroups[i].green + 0.0722*pixelGroups[i].blue;
-    if (notesData.length == 0) {
+    if (notesData.length <= 2) {
         delta = currentLum;
     } else {
-        var prevLum = notesData[i - 1].lum;
+        var prevLum = notesData[i - 3].lum;
         delta = Math.abs(prevLum - currentLum);  //delta will be in the range of 0 to 255
     }
     //console.log("delta: " + ((255 - delta) / 255) * 1000)
     //return (delta % 1.2) * 1000; //version 1
     // var test = Math.ceil(delta / 63.75); //v3
     // console.log("test: " + test);
-     console.log("delta: " + ((255 - delta) / 255));
+     console.log("delta: " + ((255 - delta) / 510));
     // return 1000 / test; //v3
-    return ((255 - delta) / 255); // v2: 255 split into 1.2 groups is 212.5 per group
+    return ((255 - delta) / 510); // v2: 255 split into 1.2 groups is 212.5 per group
 }
 
 function setFilters(lum) {
+    console.log("filters");
     excursion = lum / 42.5; // highest lum is 255, and 255 split into 6 groups is 42.5 per group
-    baseFreq = (255 - lum) / 255; // split 255 into two groups
-    intensity = lum / 127.5; // highest lum is 255, and 255 split into 2 groups is 127.5 per group
-    rate = lum / 31.875 // highest lum is 255, and 255 split into 8 groups is 31.875 per group
+    // baseFreq = (255 - lum) / 255; // split 255 into two groups
+    // intensity = lum / 127.5; // highest lum is 255, and 255 split into 2 groups is 127.5 per group
+    // rate = lum / 31.875 // highest lum is 255, and 255 split into 8 groups is 31.875 per group
 
     MIDI.setEffects([
         // {

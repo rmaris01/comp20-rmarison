@@ -49,7 +49,6 @@ function setUpCanvas(img) {
 }
 
 function createAndPlayMelody(pixelGroups, key) {
-
 	notesData = [];
 	for (var i = 0; i < pixelGroups.length; i++) {
 		var redNote = getPitchInKey(pixelGroups[i].red, key);
@@ -87,7 +86,9 @@ function createAndPlayMelody(pixelGroups, key) {
 function playNotes(i, clockDelay, notesData) {
 	if (i < notesData.length) {
 		setFilters(notesData[i].lum);
-		
+		//if I somehow interact with tuna directly?
+		//or maybe look at delta lum and only call setEffects when delta is at a threshold?
+		//somehow go into midi js code and set the effects array to empty after playing a note?
         var velocity = 127; 
         MIDI.setVolume(0, 127);
         MIDI.chordOn(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], velocity, clockDelay);
@@ -97,10 +98,6 @@ function playNotes(i, clockDelay, notesData) {
 	} else {
 			console.log('done');
 	}
-}
-
-function sleep(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 //to use soundfont-player:
