@@ -53,8 +53,9 @@ function getNoteLength(notesData, pixelGroups, i) {
 }
 
 function setFilters(lum) {
-    console.log("filters");
     excursion = lum / 42.5; // highest lum is 255, and 255 split into 6 groups is 42.5 per group
+    console.log("excursion: " + excursion);
+
     // baseFreq = (255 - lum) / 255; // split 255 into two groups
     // intensity = lum / 127.5; // highest lum is 255, and 255 split into 2 groups is 127.5 per group
     // rate = lum / 31.875 // highest lum is 255, and 255 split into 8 groups is 31.875 per group

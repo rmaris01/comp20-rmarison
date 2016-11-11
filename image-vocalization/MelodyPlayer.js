@@ -78,6 +78,7 @@ function createAndPlayMelody(pixelGroups, key) {
 	    soundfontUrl: "http://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/",
 	    instrument: "acoustic_grand_piano",
 	    onsuccess: function() {
+	    	setTimedFilters(0, notesData);
 	    	playNotes(0, 0, notesData);
 	    }
 	});
@@ -85,10 +86,6 @@ function createAndPlayMelody(pixelGroups, key) {
 
 function playNotes(i, clockDelay, notesData) {
 	if (i < notesData.length) {
-		setFilters(notesData[i].lum);
-		//if I somehow interact with tuna directly?
-		//or maybe look at delta lum and only call setEffects when delta is at a threshold?
-		//somehow go into midi js code and set the effects array to empty after playing a note?
         var velocity = 127; 
         MIDI.setVolume(0, 127);
         MIDI.chordOn(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], velocity, clockDelay);
@@ -97,6 +94,13 @@ function playNotes(i, clockDelay, notesData) {
     	playNotes(i+1, clockDelay, notesData);
 	} else {
 			console.log('done');
+	}
+}
+
+function setTimedFilters(i, notesData) {
+	if (i < notesData.length) {
+		setFilters(notesData[i].lum);
+		setTimeout(function(){setTimedFilters(i+1, notesData);}, notesData[i].duration*1000);
 	}
 }
 

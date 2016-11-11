@@ -200,13 +200,19 @@
 			}
 		};
 
+		//DISCLAIMER: This is not the original midi.setEffects function provided
+		//by MIDI.js. I've changed the logic a bit for my own purposes
 		midi.setEffects = function(list) {
 			if (ctx.tunajs) {
 				for (var n = 0; n < list.length; n ++) {
 					var data = list[n];
-					var effect = new ctx.tunajs[data.type](data);
-					effect.connect(ctx.destination);
-					effects[data.type] = effect;
+					if (effects[data.type] != undefined) {
+						effects[data.type].excursionOctaves = data.excursionOctaves;
+					} else {
+						var effect = new ctx.tunajs[data.type](data);
+						effect.connect(ctx.destination);
+						effects[data.type] = effect;
+					}
 				}
 			} else {
 				return console.log('Effects module not installed.');
