@@ -47,9 +47,9 @@ function getNoteLength(notesData, pixelGroups, i) {
     //return (delta % 1.2) * 1000; //version 1
     // var test = Math.ceil(delta / 63.75); //v3
     // console.log("test: " + test);
-     console.log("delta: " + ((255 - delta) / 510));
+     console.log("delta: " + ((255 - delta) / 600));
     // return 1000 / test; //v3
-    return ((255 - delta) / 510); // v2: 255 split into 1.2 groups is 212.5 per group
+    return ((255 - delta) / 600); // v2: 255 split into 1.2 groups is 212.5 per group
 }
 
 function setFilters(lum) {
