@@ -27,3 +27,8 @@ h1 {
 	width: 40%;
 	margin-bottom: 20px;
 }
+
+#user-img {
+	max-width:40%; 
+  	max-height:40%;
+}
