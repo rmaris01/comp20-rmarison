@@ -47,14 +47,14 @@ function getNoteLength(notesData, pixelGroups, i) {
     //return (delta % 1.2) * 1000; //version 1
     // var test = Math.ceil(delta / 63.75); //v3
     // console.log("test: " + test);
-     console.log("delta: " + ((255 - delta) / 600));
+    // console.log("delta: " + ((255 - delta) / 600));
     // return 1000 / test; //v3
     return ((255 - delta) / 600); // v2: 255 split into 1.2 groups is 212.5 per group
 }
 
 function setFilters(lum) {
     excursion = lum / 42.5; // highest lum is 255, and 255 split into 6 groups is 42.5 per group
-    console.log("excursion: " + excursion);
+    //console.log("excursion: " + excursion);
 
     // baseFreq = (255 - lum) / 255; // split 255 into two groups
     // intensity = lum / 127.5; // highest lum is 255, and 255 split into 2 groups is 127.5 per group

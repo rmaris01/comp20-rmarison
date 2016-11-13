@@ -23,10 +23,10 @@ function getImgData(img, sweep, imgContext) {
 		//on the sweeping pattern
 		reqs = updateSweepRequirements(img, sweep, reqs);
 
-		for (var i = 0; i < pixelGroups.length; i++) {
-			console.log(pixelGroups[i].reqs);
-		}
-		console.log("_____________");
+		// for (var i = 0; i < pixelGroups.length; i++) {
+		// 	console.log(pixelGroups[i].reqs);
+		// }
+		// console.log("_____________");
 	}
 
 	pixelGroups = adjustPixelGroupOrder(pixelGroups, sweep);

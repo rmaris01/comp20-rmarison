@@ -1,6 +1,8 @@
+var NUM_NOTES = 25;
+
 function getSweepRequirements(img, sweep) {
-	var verticalWidth = Math.ceil(img.width / 25);
-	var horizontalHeight = Math.ceil(img.height / 25);
+	var verticalWidth = Math.ceil(img.width / NUM_NOTES);
+	var horizontalHeight = Math.ceil(img.height / NUM_NOTES);
 	var verticalWidthBlocked = Math.ceil(img.width / 5);
 	var horizontalHeightBlocked = Math.ceil(img.height / 5);
 	console.log("v: " + verticalWidthBlocked);
@@ -34,8 +36,8 @@ function getSweepRequirements(img, sweep) {
 }
 
 function updateSweepRequirements(img, sweep, oldReqs) {
-	var verticalWidth = Math.ceil(img.width / 25);
-	var horizontalHeight = Math.ceil(img.height / 25);
+	var verticalWidth = Math.ceil(img.width / NUM_NOTES);
+	var horizontalHeight = Math.ceil(img.height / NUM_NOTES);
 	var verticalWidthBlocked = Math.ceil(img.width / 5);
 	var horizontalHeightBlocked = Math.ceil(img.height / 5);
 	switch(sweep) {

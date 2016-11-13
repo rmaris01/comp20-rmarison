@@ -6,16 +6,12 @@ var canvas;
 var imgContext;
 
 function play() {
-	//var imgContext;
 	var pixelGroups;
 
 	if (!setUpCorrectly()) {
 		return;
 	}
 
-	// canvas = document.getElementById("my-canvas");
-	// imgContext = canvas.getContext('2d');
-	// imgContext.drawImage(img, 0, 0);
 	imgContext.clearRect(0, 0, canvas.width, canvas.height);
 	imgContext.drawImage(uploadedImg, 0, 0);
 	pixelGroups = getImgData(uploadedImg, sweep, imgContext);
@@ -96,8 +92,8 @@ function createAndPlayMelody(pixelGroups, key, sweep) {
 	    soundfontUrl: "http://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/",
 	    instrument: "acoustic_grand_piano",
 	    onsuccess: function() {
-	    	setTimedFilters(0, notesData);
-	    	playNotes(0, 0, notesData);
+	    	setTimeout(function(){setTimedFilters(0, notesData);}, 500);
+	    	playNotes(0, 0.5, notesData);
 	    }
 	});
 }
