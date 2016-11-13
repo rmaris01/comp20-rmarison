@@ -104,16 +104,28 @@ function getSweepStart(sweep, canvas) {
 					y1: 0,
 					x2: canvas.width,
 					y2: canvas.height
-				};
+			};
 		case 'left-to-right':
 			return {
 					x1: 0,
 					y1: 0,
 					x2: 0,
 					y2: canvas.height
-				};
+			};
 		case 'bottom-to-top':
+			return {
+					x1: 0,
+					y1: canvas.height,
+					x2: canvas.width,
+					y2: canvas.height
+			};
 		case 'top-to-bottom':
+			return {
+					x1: 0,
+					y1: 0,
+					x2: canvas.width,
+					y2: 0
+			};
 		case 'blocked':
 	}
 }
@@ -126,16 +138,28 @@ function adjustSweepReqsBySweep(sweepReqs) {
 					y1: sweepReqs.y,
 					x2: sweepReqs.x,
 					y2: sweepReqs.height
-				};
+			};
 		case 'left-to-right':
 			return {
 					x1: sweepReqs.x + sweepReqs.width,
 					y1: sweepReqs.y,
 					x2: sweepReqs.x + sweepReqs.width,
 					y2: sweepReqs.height
-				};
+			};
 		case 'bottom-to-top':
+			return {
+					x1: sweepReqs.x,
+					y1: sweepReqs.y,
+					x2: sweepReqs.width,
+					y2: sweepReqs.y
+			};
 		case 'top-to-bottom':
+			return {
+					x1: sweepReqs.x,
+					y1: sweepReqs.y + sweepReqs.height,
+					x2: sweepReqs.width,
+					y2: sweepReqs.y + sweepReqs.height
+			};
 		case 'blocked':
 	}
 }
