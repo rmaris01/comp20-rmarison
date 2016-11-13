@@ -1,27 +1,31 @@
-var img;
+var uploadedImg;
 var sweep;
 var key;
 var currentTimeout;
+var canvas;
+var imgContext;
 
 function play() {
-	var canvas;
-	var imgContext;
+	//var imgContext;
 	var pixelGroups;
 
 	if (!setUpCorrectly()) {
 		return;
 	}
 
-	canvas = setUpCanvas(img);
-	imgContext = canvas.getContext('2d');
-	imgContext.drawImage(img, 0, 0);
-	pixelGroups = getImgData(img, sweep, imgContext);
-	createAndPlayMelody(pixelGroups, key);
+	// canvas = document.getElementById("my-canvas");
+	// imgContext = canvas.getContext('2d');
+	// imgContext.drawImage(img, 0, 0);
+	imgContext.clearRect(0, 0, canvas.width, canvas.height);
+	imgContext.drawImage(uploadedImg, 0, 0);
+	pixelGroups = getImgData(uploadedImg, sweep, imgContext);
+	drawInitSweeper(sweep, canvas, imgContext);
+	createAndPlayMelody(pixelGroups, key, sweep);
 }
 
 function setUpCorrectly() {
-	img = document.getElementById('user-img');
-	if (img.getAttribute('src') == '#') {
+	//img = document.getElementById('user-img');
+	if (uploadedImg == undefined) {
 		alert("Please upload an image before playing.");
 		return false;
 	}
@@ -41,14 +45,25 @@ function setUpCorrectly() {
 	return true;
 }
 
-function setUpCanvas(img) {
-	var canvas = document.createElement('canvas');
-	canvas.width = img.width;
-	canvas.height = img.height;
-	return canvas;
+function setUpCanvas(event) {
+	// var canvas = document.createElement('canvas');
+	// canvas.width = img.width;
+	// canvas.height = img.height;
+	// return canvas;
+
+	//$('#user-img').attr('src', e.target.result);
+	canvas=document.getElementById("my-canvas");
+	imgContext=canvas.getContext("2d");
+	uploadedImg = new Image();
+    uploadedImg.onload = function(){
+        canvas.width = uploadedImg.width;
+        canvas.height = uploadedImg.height;
+        imgContext.drawImage(uploadedImg, 0, 0);
+    }
+    uploadedImg.src = event.target.result;
 }
 
-function createAndPlayMelody(pixelGroups, key) {
+function createAndPlayMelody(pixelGroups, key, sweep) {
 	notesData = [];
 	for (var i = 0; i < pixelGroups.length; i++) {
 		var redNote = getPitchInKey(pixelGroups[i].red, key);
@@ -56,13 +71,15 @@ function createAndPlayMelody(pixelGroups, key) {
 		var blueNote = getPitchInKey(pixelGroups[i].blue, key);
 		var duration = getNoteLength(notesData, pixelGroups, i);
 		var luminosity = 0.2126*pixelGroups[i].red + 0.7152*pixelGroups[i].green + 0.0722*pixelGroups[i].blue;
+		var sweeps = pixelGroups[i].reqs;
 
 		notesData.push({
 			redNote: redNote,
 			greenNote: greenNote,
 			blueNote: blueNote,
 			duration: duration,
-			lum: luminosity
+			lum: luminosity,
+			sweeps: sweeps
 		});
 	}
 
@@ -71,6 +88,7 @@ function createAndPlayMelody(pixelGroups, key) {
 	// 	// console.log("greenNote: " + notesData[i].greenNote);
 	// 	// console.log("blueNote: " + notesData[i].blueNote);
 	// 	//console.log("duration: " + notesData[i].duration);
+	// 	console.log(notesData[i].sweeps);
 	// 	console.log("");
 	// }			
 
@@ -99,6 +117,8 @@ function playNotes(i, clockDelay, notesData) {
 
 function setTimedFilters(i, notesData) {
 	if (i < notesData.length) {
+		drawNextSweeper(notesData[i].sweeps, canvas, imgContext);
+
 		setFilters(notesData[i].lum);
 		setTimeout(function(){setTimedFilters(i+1, notesData);}, notesData[i].duration*1000);
 	}

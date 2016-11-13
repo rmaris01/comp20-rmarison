@@ -10,21 +10,32 @@ function getImgData(img, sweep, imgContext) {
 			red: averages.red,
 			green: averages.green,
 			blue: averages.blue,
-			alpha: averages.alpha
+			alpha: averages.alpha,
+			reqs: {
+				x: reqs.x,
+				y: reqs.y,
+				width: reqs.width,
+				height: reqs.height
+			}
 		});
 
 		//set new x, y, width, and height here. This will also differ depending
 		//on the sweeping pattern
 		reqs = updateSweepRequirements(img, sweep, reqs);
+
+		for (var i = 0; i < pixelGroups.length; i++) {
+			console.log(pixelGroups[i].reqs);
+		}
+		console.log("_____________");
 	}
+
 	pixelGroups = adjustPixelGroupOrder(pixelGroups, sweep);
 	console.log(pixelGroups.length);
+
 	return pixelGroups;
 }
 
 function getRGBAverages(reqs, imgContext) {
-	console.log("y: " + reqs.y);
-
 	var imageData = imgContext.getImageData(reqs.x, reqs.y, reqs.width, reqs.height);
 	var pixelData = imageData.data;
 	var numPixels = pixelData.length / 4;

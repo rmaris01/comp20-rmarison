@@ -66,7 +66,7 @@ aspects of the music:
 
 		        var reader = new FileReader();
 		        reader.onload = function (e) {
-		            $('#user-img').attr('src', e.target.result);
+		            setUpCanvas(e);
 		        }
 		        reader.readAsDataURL(input.files[0]);
 		    }
@@ -80,7 +80,9 @@ aspects of the music:
 		<h1>Senior Design: Image Vocalization</h1>
 		<hr>
     	<input type="file" id="image-input" onchange="readURL(this);"/> <br>
-    	<img id="user-img" src="pixels4.jpg" alt="your uploaded image"/> <br>
+    	<canvas id="my-canvas" style="border:1px solid #d3d3d3;"></canvas>
+<!--     	<img id="user-img" src="pixels4.jpg" alt="your uploaded image"/> <br>
+ -->
  	   	<!-- <button id="midi-btn" onclick="getMidi()">Get Midi Access</button> -->
  	   	
  	   	<form id="sweep-form">
