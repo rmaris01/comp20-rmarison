@@ -4,6 +4,7 @@ var key;
 var currentTimeout;
 var canvas;
 var imgContext;
+var oldSweepPos;
 
 function play() {
 	var pixelGroups;
@@ -15,7 +16,7 @@ function play() {
 	imgContext.clearRect(0, 0, canvas.width, canvas.height);
 	imgContext.drawImage(uploadedImg, 0, 0);
 	pixelGroups = getImgData(uploadedImg, sweep, imgContext);
-	drawInitSweeper(sweep, canvas, imgContext);
+	oldSweepPos = drawInitSweeper(sweep, canvas, imgContext);
 	createAndPlayMelody(pixelGroups, key, sweep);
 }
 
@@ -67,7 +68,7 @@ function createAndPlayMelody(pixelGroups, key, sweep) {
 		var blueNote = getPitchInKey(pixelGroups[i].blue, key);
 		var duration = getNoteLength(notesData, pixelGroups, i);
 		var luminosity = 0.2126*pixelGroups[i].red + 0.7152*pixelGroups[i].green + 0.0722*pixelGroups[i].blue;
-		var sweeps = pixelGroups[i].reqs;
+		// var sweeps = pixelGroups[i].reqs;
 
 		notesData.push({
 			redNote: redNote,
@@ -75,7 +76,7 @@ function createAndPlayMelody(pixelGroups, key, sweep) {
 			blueNote: blueNote,
 			duration: duration,
 			lum: luminosity,
-			sweeps: sweeps
+			// sweeps: sweeps
 		});
 	}
 
@@ -113,7 +114,7 @@ function playNotes(i, clockDelay, notesData) {
 
 function setTimedFilters(i, notesData) {
 	if (i < notesData.length) {
-		drawNextSweeper(notesData[i].sweeps, canvas, imgContext);
+		oldSweepPos = drawNextSweeper(oldSweepPos, canvas, imgContext, sweep);
 
 		setFilters(notesData[i].lum);
 		setTimeout(function(){setTimedFilters(i+1, notesData);}, notesData[i].duration*1000);

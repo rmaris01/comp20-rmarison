@@ -1,12 +1,17 @@
 var NUM_NOTES = 25;
+var verticalWidth;
+var horizontalHeight;
+var verticalWidthBlocked;
+var horizontalHeightBlocked;
 
 function getSweepRequirements(img, sweep) {
-	var verticalWidth = Math.ceil(img.width / NUM_NOTES);
-	var horizontalHeight = Math.ceil(img.height / NUM_NOTES);
-	var verticalWidthBlocked = Math.ceil(img.width / 5);
-	var horizontalHeightBlocked = Math.ceil(img.height / 5);
-	console.log("v: " + verticalWidthBlocked);
-	console.log("h: " + horizontalHeightBlocked);
+	img = img;
+	verticalWidth = Math.ceil(img.width / NUM_NOTES);
+	horizontalHeight = Math.ceil(img.height / NUM_NOTES);
+	verticalWidthBlocked = Math.ceil(img.width / 5);
+	horizontalHeightBlocked = Math.ceil(img.height / 5);
+	//console.log("v: " + verticalWidthBlocked);
+	//console.log("h: " + horizontalHeightBlocked);
 
 	switch(sweep) {
 		case 'right-to-left':
@@ -36,10 +41,6 @@ function getSweepRequirements(img, sweep) {
 }
 
 function updateSweepRequirements(img, sweep, oldReqs) {
-	var verticalWidth = Math.ceil(img.width / NUM_NOTES);
-	var horizontalHeight = Math.ceil(img.height / NUM_NOTES);
-	var verticalWidthBlocked = Math.ceil(img.width / 5);
-	var horizontalHeightBlocked = Math.ceil(img.height / 5);
 	switch(sweep) {
 		case 'right-to-left':
 		case 'left-to-right':
@@ -83,7 +84,7 @@ function updateSweepRequirements(img, sweep, oldReqs) {
 	}
 }
 
-function stillSweeping(reqs, img) {
+function stillSweeping(reqs, img, sweep) {
 	switch(sweep) {
 		case 'right-to-left':
 		case 'left-to-right':
@@ -127,40 +128,68 @@ function getSweepStart(sweep, canvas) {
 					y2: 0
 			};
 		case 'blocked':
+			return {
+				x1: 0,
+				y1: 0,
+				x2: 0,
+				y2: horizontalHeightBlocked
+			};
 	}
 }
 
-function adjustSweepReqsBySweep(sweepReqs) {
+function adjustSweepReqsBySweep(oldSweepPos, sweep, canvas) {
 	switch(sweep) {
 		case 'right-to-left':
 			return {
-					x1: sweepReqs.x,
-					y1: sweepReqs.y,
-					x2: sweepReqs.x,
-					y2: sweepReqs.height
+					x1: oldSweepPos.x1 - verticalWidth,
+					y1: oldSweepPos.y1,
+					x2: oldSweepPos.x2 - verticalWidth,
+					y2: oldSweepPos.y2
 			};
 		case 'left-to-right':
 			return {
-					x1: sweepReqs.x + sweepReqs.width,
-					y1: sweepReqs.y,
-					x2: sweepReqs.x + sweepReqs.width,
-					y2: sweepReqs.height
+					x1: oldSweepPos.x1 + verticalWidth,
+					y1: oldSweepPos.y1,
+					x2: oldSweepPos.x2 + verticalWidth,
+					y2: oldSweepPos.y2
 			};
 		case 'bottom-to-top':
 			return {
-					x1: sweepReqs.x,
-					y1: sweepReqs.y,
-					x2: sweepReqs.width,
-					y2: sweepReqs.y
+					x1: oldSweepPos.x1,
+					y1: oldSweepPos.y1 - horizontalHeight,
+					x2: oldSweepPos.x2,
+					y2: oldSweepPos.y2 - horizontalHeight
 			};
 		case 'top-to-bottom':
 			return {
-					x1: sweepReqs.x,
-					y1: sweepReqs.y + sweepReqs.height,
-					x2: sweepReqs.width,
-					y2: sweepReqs.y + sweepReqs.height
+					x1: oldSweepPos.x1,
+					y1: oldSweepPos.y1 + horizontalHeight,
+					x2: oldSweepPos.x2,
+					y2: oldSweepPos.y2 + horizontalHeight
 			};
 		case 'blocked':
+			if (oldSweepPos.x1 + verticalWidthBlocked >= canvas.width && oldSweepPos.y1 + horizontalHeightBlocked >= canvas.height) {
+				return {
+					x1: oldSweepPos.x1 + verticalWidthBlocked,
+					y1: oldSweepPos.y1,
+					x2: oldSweepPos.x1 + verticalWidthBlocked,
+					y2: oldSweepPos.y2
+				};
+			} else if (oldSweepPos.x1 + verticalWidthBlocked >= canvas.width) {
+				return {
+					x1: 0,
+					y1: oldSweepPos.y1 + horizontalHeightBlocked,
+					x2: 0,
+					y2: oldSweepPos.y2 + horizontalHeightBlocked
+				};
+			} else {
+				return {
+					x1: oldSweepPos.x1 + verticalWidthBlocked,
+					y1: oldSweepPos.y1,
+					x2: oldSweepPos.x2 + verticalWidthBlocked,
+					y2: oldSweepPos.y2
+				};
+			}
 	}
 }
 
@@ -169,15 +198,17 @@ function drawInitSweeper(sweep, canvas, imgContext) {
 	imgContext.lineWidth = "5";
 	imgContext.strokeStyle = "red";
 
-	var sweepReqs = getSweepStart(sweep, canvas);
+	var sweepPos = getSweepStart(sweep, canvas);
 
-	imgContext.moveTo(sweepReqs.x1, sweepReqs.y1);
-	imgContext.lineTo(sweepReqs.x2, sweepReqs.y2);
+	imgContext.moveTo(sweepPos.x1, sweepPos.y1);
+	imgContext.lineTo(sweepPos.x2, sweepPos.y2);
 	imgContext.stroke(); 
+
+	return sweepPos;
 }
 
 // essentially draw the sweeper in the "ending" location on the img for that pixel group
-function drawNextSweeper(sweepReqs, canvas, imgContext){
+function drawNextSweeper(oldSweepPos, canvas, imgContext, sweep){
 	imgContext.clearRect(0, 0, canvas.width, canvas.height);
 	imgContext.drawImage(uploadedImg, 0, 0);
 
@@ -185,9 +216,11 @@ function drawNextSweeper(sweepReqs, canvas, imgContext){
 	imgContext.lineWidth = "5";
 	imgContext.strokeStyle = "red";
 
-	sweepReqs = adjustSweepReqsBySweep(sweepReqs);
+	sweepPos = adjustSweepReqsBySweep(oldSweepPos, sweep, canvas);
 
-	imgContext.moveTo(sweepReqs.x1, sweepReqs.y1);
-	imgContext.lineTo(sweepReqs.x2, sweepReqs.y2);
+	imgContext.moveTo(sweepPos.x1, sweepPos.y1);
+	imgContext.lineTo(sweepPos.x2, sweepPos.y2);
 	imgContext.stroke();
+
+	return sweepPos;
 }

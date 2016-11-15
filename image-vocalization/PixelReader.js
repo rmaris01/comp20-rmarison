@@ -4,19 +4,19 @@ function getImgData(img, sweep, imgContext) {
 	var pixelGroups = [];
 
 	//get averages for each chunk of pixels, and store in array
-	while (stillSweeping(reqs, img)) {
+	while (stillSweeping(reqs, img, sweep)) {
 		var averages = getRGBAverages(reqs, imgContext);
 		pixelGroups.push({
 			red: averages.red,
 			green: averages.green,
 			blue: averages.blue,
 			alpha: averages.alpha,
-			reqs: {
-				x: reqs.x,
-				y: reqs.y,
-				width: reqs.width,
-				height: reqs.height
-			}
+			// reqs: {
+			// 	x: reqs.x,
+			// 	y: reqs.y,
+			// 	width: reqs.width,
+			// 	height: reqs.height
+			// }
 		});
 
 		//set new x, y, width, and height here. This will also differ depending
