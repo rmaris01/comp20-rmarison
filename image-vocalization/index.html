@@ -31,10 +31,9 @@ aspects of the music:
 
 	<title>Senior Design: Image Vocalization</title>
 	<link rel="stylesheet" href="style.css"/>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
 
-	<link rel="stylesheet" href="dropzone.css"/>
-	<script src="dropzone.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	
 	<script src="soundfont-player.min.js"></script>
 	<script type="text/javascript" src="midiAccess.js"></script>
@@ -86,6 +85,7 @@ aspects of the music:
  	   	<!-- <button id="midi-btn" onclick="getMidi()">Get Midi Access</button> -->
  	   	
  	   	<form id="sweep-form">
+ 	   		<p> Choose a sweeping pattern: </p>
 	 	   	Left to Right: <input type="radio" name="sweeps" id="left-to-right" value="left-to-right">
 	 	   	Right to Left: <input type="radio" name="sweeps" id="right-to-left" value="right-to-left">
 	 	   	Top to Bottom: <input type="radio" name="sweeps" id="top-to-bottom" value="top-to-bottom">
@@ -93,8 +93,7 @@ aspects of the music:
 	 	    Blocked: <input type="radio" name="sweeps" id="blocked" value="blocked">
  	   	</form>
 
- 	   	<button id="play-btn" onclick="play()">Play</button>
-	 	<hr>
+ 	   	<hr>
 
 	 	<form id="key-form">
 		 	<p> Choose a key to play in: </p>
@@ -103,6 +102,13 @@ aspects of the music:
 		 	D: <input type="radio" id="keyOfD" value="keyOfD">
 		 	A: <input type="radio" id="keyOfA" value="keyOfA">
 	 	</form>
+	 	<hr>
+<div class="jumbotron">
+  <h1>Hello, world!</h1>
+  <p>...</p>
+  <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+</div>
+ 	 	<button id="play-btn" onclick="play()">Play</button>
 
 	</div>
 </body>
