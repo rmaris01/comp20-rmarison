@@ -79,10 +79,10 @@ aspects of the music:
 </head>
 
 <body class="background-pic">
-	<div class="title">
+	<!-- <div class="title">
 		<h1>Senior Design: Image Vocalization</h1>
 	</div>
-	<hr>
+	<hr> -->
 
 <!--     	<img id="user-img" src="pixels4.jpg" alt="your uploaded image"/> <br>
  -->
@@ -104,7 +104,7 @@ aspects of the music:
 		 		
 		 		<hr>
 			 	   	<form id="sweep-form">
-			 	   		<p> Choose a sweeping pattern: </p>
+			 	   		<p> Select a sweeping pattern: </p>
 				 	   	<!-- Left to Right: <input type="radio" name="sweeps" id="left-to-right" value="left-to-right">
 				 	   	Right to Left: <input type="radio" name="sweeps" id="right-to-left" value="right-to-left">
 				 	   	Top to Bottom: <input type="radio" name="sweeps" id="top-to-bottom" value="top-to-bottom">
@@ -122,7 +122,7 @@ aspects of the music:
 		 	   	<hr>
 
 			 	<form id="key-form">
-				 	<p> Choose a key to play in: </p>
+				 	<p> Select a key to play in: </p>
 				 	<!-- C: <input type="radio" id="keyOfC" value="keyOfC">
 				 	G: <input type="radio" id="keyOfG" value="keyOfG">
 				 	D: <input type="radio" id="keyOfD" value="keyOfD">
@@ -132,6 +132,30 @@ aspects of the music:
 					  	<option value="keyOfG">G</option>
 					  	<option value="keyOfD">D</option>
 					  	<option value="keyOfA">A</option>
+					</select>
+			 	</form>
+
+		 		<hr>
+
+		 		<form id="instrument-form">
+				 	<p> Select an instrument to play: </p>
+				 	<select class="selectpicker" id="instrument-picker" title="select one...">
+						<option value="acoustic_grand_piano">Piano</option>
+						<option value="acoustic_guitar_steel">Steel Guitar</option>
+						<option value="acoustic_guitar_nylon">Nylon Guitar</option>
+						<option value="acoustic_bass">Bass Guitar</option>
+						<option value="alto_sax">Alto Sax</option>
+						<option value="banjo">Banjo</option>
+						<option value="bassoon">Bassoon</option>
+						<option value="cello">Cello</option>
+						<option value="clarinet">Clarinet</option>
+						<option value="french_horn">French Horn</option>
+						<option value="flute">Flute</option>
+						<option value="trumpet">Trumpet</option>
+						<option value="violin">Violin</option>
+
+
+
 					</select>
 			 	</form>
 

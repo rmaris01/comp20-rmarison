@@ -1,6 +1,7 @@
 var uploadedImg;
 var sweep;
 var key;
+var instrument;
 var currentTimeout;
 var canvas;
 var imgContext;
@@ -17,7 +18,7 @@ function play() {
 	imgContext.drawImage(uploadedImg, 0, 0);
 	pixelGroups = getImgData(uploadedImg, sweep, imgContext);
 	oldSweepPos = drawInitSweeper(sweep, canvas, imgContext);
-	createAndPlayMelody(pixelGroups, key, sweep);
+	createAndPlayMelody(pixelGroups, key, sweep, instrument);
 }
 
 function setUpCorrectly() {
@@ -29,16 +30,24 @@ function setUpCorrectly() {
 
 	// sweep = $('#sweep-form input[type=radio]:checked').val();
 	sweep = $('#sweeper-picker').find(':selected').val();
-	if (sweep == undefined) {
+	console.log(sweep);
+	if (sweep == "") {
 			alert("Please select a sweeping pattern before playing.");
 			return false;
-		}
+	}
 
 	// key = $('#key-form input[type=radio]:checked').val();
 	key = $('#key-picker').find(':selected').val();
 
-	if (key == undefined) {
+	if (key == "") {
 		alert("Please select a key before playing.");
+		return false;
+	}
+
+	instrument = $('#instrument-picker').find(':selected').val();
+
+	if (instrument == "") {
+		alert("Please select an instrument before playing.");
 		return false;
 	}
 
@@ -63,7 +72,7 @@ function setUpCanvas(event) {
     uploadedImg.src = event.target.result;
 }
 
-function createAndPlayMelody(pixelGroups, key, sweep) {
+function createAndPlayMelody(pixelGroups, key, sweep, instrument) {
 	notesData = [];
 	for (var i = 0; i < pixelGroups.length; i++) {
 		var redNote = getPitchInKey(pixelGroups[i].red, key);
@@ -92,10 +101,12 @@ function createAndPlayMelody(pixelGroups, key, sweep) {
 	// 	console.log("");
 	// }			
 
+console.log(instrument);
 	MIDI.loadPlugin({
 	    soundfontUrl: "http://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/",
-	    instrument: "acoustic_grand_piano",
+	    instrument: instrument,
 	    onsuccess: function() {
+	    	MIDI.programChange(0, MIDI.GM.byName[instrument].number);
 	    	setTimeout(function(){setTimedFilters(0, notesData);}, 500);
 	    	playNotes(0, 0.5, notesData);
 	    }
