@@ -31,9 +31,12 @@ aspects of the music:
 
 	<title>Senior Design: Image Vocalization</title>
 	<link rel="stylesheet" href="style.css"/>
-	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="bootstrap/js/bootstrap-select.min.js"></script>
 	
 	<script src="soundfont-player.min.js"></script>
 	<script type="text/javascript" src="midiAccess.js"></script>
@@ -61,6 +64,7 @@ aspects of the music:
 
 	<script>
 		function readURL(input) {
+			$('#upload-file-info').html($(input).val());
 		    if (input.files && input.files[0]) {
 
 		        var reader = new FileReader();
@@ -75,41 +79,72 @@ aspects of the music:
 </head>
 
 <body class="background-pic">
-	<div class="image-vocal">
+	<div class="title">
 		<h1>Senior Design: Image Vocalization</h1>
-		<hr>
-    	<input type="file" id="image-input" onchange="readURL(this);"/> <br>
-    	<canvas id="my-canvas" style="border:1px solid #d3d3d3;"></canvas>
+	</div>
+	<hr>
+
 <!--     	<img id="user-img" src="pixels4.jpg" alt="your uploaded image"/> <br>
  -->
  	   	<!-- <button id="midi-btn" onclick="getMidi()">Get Midi Access</button> -->
- 	   	
- 	   	<form id="sweep-form">
- 	   		<p> Choose a sweeping pattern: </p>
-	 	   	Left to Right: <input type="radio" name="sweeps" id="left-to-right" value="left-to-right">
-	 	   	Right to Left: <input type="radio" name="sweeps" id="right-to-left" value="right-to-left">
-	 	   	Top to Bottom: <input type="radio" name="sweeps" id="top-to-bottom" value="top-to-bottom">
-	 	    Bottom to Top: <input type="radio" name="sweeps" id="bottom-to-top" value="bottom-to-top">
-	 	    Blocked: <input type="radio" name="sweeps" id="blocked" value="blocked">
- 	   	</form>
+	<div class="container">
+		<div class="col-md-5 col-xs-5">
+	   		<div class="jumbotron">
+	   			<!-- <label class="btn btn-default btn-file">
+				    Select Image <input type="file" id="image-input" onchange="readURL(this);" style="display: none;">
+				</label> -->
+				<label class="btn btn-default" for="image-input">
+				    <input id="image-input" type="file" style="display:none;" onchange="readURL(this);">
+				    Select Image
+				</label>
+				<span class='label label-info' id="upload-file-info"></span>
+	   			<!-- <div class="upload">
+	   				<input type="file" id="image-input" onchange="readURL(this);"/> <br>
+	   			</div> -->
+		 		
+		 		<hr>
+			 	   	<form id="sweep-form">
+			 	   		<p> Choose a sweeping pattern: </p>
+				 	   	<!-- Left to Right: <input type="radio" name="sweeps" id="left-to-right" value="left-to-right">
+				 	   	Right to Left: <input type="radio" name="sweeps" id="right-to-left" value="right-to-left">
+				 	   	Top to Bottom: <input type="radio" name="sweeps" id="top-to-bottom" value="top-to-bottom">
+				 	    Bottom to Top: <input type="radio" name="sweeps" id="bottom-to-top" value="bottom-to-top">
+				 	    Blocked: <input type="radio" name="sweeps" id="blocked" value="blocked"> -->
+						<select class="selectpicker" id="sweeper-picker" title="select one...">
+							<option value="left-to-right">Left to Right</option>
+						  	<option value="right-to-left">Right to Left</option>
+						  	<option value="top-to-bottom">Top to Bottom</option>
+						  	<option value="bottom-to-top">Bottom to Top</option>
+						  	<option value="blocked">Blocked</option>
+						</select>
+			 	   	</form>
 
- 	   	<hr>
+		 	   	<hr>
 
-	 	<form id="key-form">
-		 	<p> Choose a key to play in: </p>
-		 	C: <input type="radio" id="keyOfC" value="keyOfC">
-		 	G: <input type="radio" id="keyOfG" value="keyOfG">
-		 	D: <input type="radio" id="keyOfD" value="keyOfD">
-		 	A: <input type="radio" id="keyOfA" value="keyOfA">
-	 	</form>
-	 	<hr>
-<div class="jumbotron">
-  <h1>Hello, world!</h1>
-  <p>...</p>
-  <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
-</div>
- 	 	<button id="play-btn" onclick="play()">Play</button>
+			 	<form id="key-form">
+				 	<p> Choose a key to play in: </p>
+				 	<!-- C: <input type="radio" id="keyOfC" value="keyOfC">
+				 	G: <input type="radio" id="keyOfG" value="keyOfG">
+				 	D: <input type="radio" id="keyOfD" value="keyOfD">
+				 	A: <input type="radio" id="keyOfA" value="keyOfA"> -->
+				 	<select class="selectpicker" id="key-picker" title="select one...">
+						<option value="keyOfC">C</option>
+					  	<option value="keyOfG">G</option>
+					  	<option value="keyOfD">D</option>
+					  	<option value="keyOfA">A</option>
+					</select>
+			 	</form>
 
+		 		<hr>
+
+				<button type="button" class="btn btn-primary" id="play-btn" onclick="play()">Play</button>
+		 	</div>
+		</div>
+		<div class="col-md-5 col-xs-5 col-md-offset-1">
+    		<canvas id="my-canvas"></canvas>
+    	</div>
 	</div>
+
+
 </body>
 </html>

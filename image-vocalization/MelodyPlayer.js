@@ -27,13 +27,16 @@ function setUpCorrectly() {
 		return false;
 	}
 
-	sweep = $('#sweep-form input[type=radio]:checked').val();
+	// sweep = $('#sweep-form input[type=radio]:checked').val();
+	sweep = $('#sweeper-picker').find(':selected').val();
 	if (sweep == undefined) {
-		alert("Please select a sweeping pattern before playing.");
-		return false;
-	}
+			alert("Please select a sweeping pattern before playing.");
+			return false;
+		}
 
-	key = $('#key-form input[type=radio]:checked').val();
+	// key = $('#key-form input[type=radio]:checked').val();
+	key = $('#key-picker').find(':selected').val();
+
 	if (key == undefined) {
 		alert("Please select a key before playing.");
 		return false;
