@@ -3,6 +3,7 @@ var verticalWidth;
 var horizontalHeight;
 var verticalWidthBlocked;
 var horizontalHeightBlocked;
+var sweeperColor;
 
 function getSweepRequirements(img, sweep) {
 	img = img;
@@ -196,7 +197,8 @@ function adjustSweepReqsBySweep(oldSweepPos, sweep, canvas) {
 function drawInitSweeper(sweep, canvas, imgContext) {
 	imgContext.beginPath();
 	imgContext.lineWidth = "5";
-	imgContext.strokeStyle = "red";
+	sweeperColor = $('#color-picker').val();
+	imgContext.strokeStyle = sweeperColor;
 
 	var sweepPos = getSweepStart(sweep, canvas);
 
@@ -214,7 +216,7 @@ function drawNextSweeper(oldSweepPos, canvas, imgContext, sweep){
 
 	imgContext.beginPath();
 	imgContext.lineWidth = "5";
-	imgContext.strokeStyle = "red";
+	imgContext.strokeStyle = sweeperColor;
 
 	sweepPos = adjustSweepReqsBySweep(oldSweepPos, sweep, canvas);
 
