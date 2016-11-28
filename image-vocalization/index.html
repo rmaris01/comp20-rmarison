@@ -101,87 +101,154 @@ aspects of the music:
  	   	<!-- <button id="midi-btn" onclick="getMidi()">Get Midi Access</button> -->
 	<div class="container">
 		<div class="col-md-5 col-xs-5">
-	   		<div class="jumbotron">
-	   			<!-- <label class="btn btn-default btn-file">
-				    Select Image <input type="file" id="image-input" onchange="readURL(this);" style="display: none;">
-				</label> -->
-				<label class="btn btn-default" for="image-input">
-				    <input id="image-input" type="file" style="display:none;" onchange="readURL(this);">
-				    Select Image
-				</label>
-				<span class='label label-info' id="upload-file-info"></span>
-	   			<!-- <div class="upload">
-	   				<input type="file" id="image-input" onchange="readURL(this);"/> <br>
-	   			</div> -->
-		 		
-		 		<hr>
-			 	   	<form id="sweep-form">
-			 	   		<p> Select a sweeping pattern: </p>
-				 	   	<!-- Left to Right: <input type="radio" name="sweeps" id="left-to-right" value="left-to-right">
-				 	   	Right to Left: <input type="radio" name="sweeps" id="right-to-left" value="right-to-left">
-				 	   	Top to Bottom: <input type="radio" name="sweeps" id="top-to-bottom" value="top-to-bottom">
-				 	    Bottom to Top: <input type="radio" name="sweeps" id="bottom-to-top" value="bottom-to-top">
-				 	    Blocked: <input type="radio" name="sweeps" id="blocked" value="blocked"> -->
-						<select class="selectpicker" id="sweeper-picker" title="select one...">
-							<option value="left-to-right">Left to Right</option>
-						  	<option value="right-to-left">Right to Left</option>
-						  	<option value="top-to-bottom">Top to Bottom</option>
-						  	<option value="bottom-to-top">Bottom to Top</option>
-						  	<option value="blocked">Blocked</option>
-						</select>
-			 	   	</form>
+	   		<!-- <div class="jumbotron"> -->
+   			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+			    	
+		    	<!-- group 1: image-->
+				<div class="panel panel-default">
+				    <div class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" data-target="#collapseOne" data-parent="#accordion">
+				     	<h4 class="panel-title">
+					        <a class="collapsed" role="button" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">Select an Image</a>
+				      	</h4>
+				    </div>
+				    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+			      		<div class="panel-body">
+			         		<!-- <label class="btn btn-default btn-file">
+					   		Select Image <input type="file" id="image-input" onchange="readURL(this);" style="display: none;">
+							</label> -->
+							<label class="btn btn-default" for="image-input">
+							    <input id="image-input" type="file" style="display:none;" onchange="readURL(this);">
+							    Select Image:
+							</label>
+							<span class='label label-info' id="upload-file-info"></span>
+				   			<!-- <div class="upload">
+				   				<input type="file" id="image-input" onchange="readURL(this);"/> <br>
+				   			</div> -->
+			      		</div>
+				    </div>
+				</div>
 
-		 	   	<hr>
+				<!-- group 2: sweeper -->
+				<div class="panel panel-default">
+				    <div class="panel-heading" role="tab" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" data-parent="#accordion">
+				     	<h4 class="panel-title">
+					        <a class="collapsed" role="button" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Select a sweeping pattern:</a>
+				      	</h4>
+				    </div>
+				    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+			      		<div class="panel-body">
+			         		<form id="sweep-form">
+						 	   	<!-- Left to Right: <input type="radio" name="sweeps" id="left-to-right" value="left-to-right">
+						 	   	Right to Left: <input type="radio" name="sweeps" id="right-to-left" value="right-to-left">
+						 	   	Top to Bottom: <input type="radio" name="sweeps" id="top-to-bottom" value="top-to-bottom">
+						 	    Bottom to Top: <input type="radio" name="sweeps" id="bottom-to-top" value="bottom-to-top">
+						 	    Blocked: <input type="radio" name="sweeps" id="blocked" value="blocked"> -->
+								<select class="selectpicker" id="sweeper-picker" title="select one...">
+									<option value="left-to-right">Left to Right</option>
+								  	<option value="right-to-left">Right to Left</option>
+								  	<option value="top-to-bottom">Top to Bottom</option>
+								  	<option value="bottom-to-top">Bottom to Top</option>
+								  	<option value="blocked">Blocked</option>
+								</select>
+					 	   	</form>
+			      		</div>
+				    </div>
+				</div>
 
-			 	<form id="key-form">
-				 	<p> Select a key to play in: </p>
-				 	<!-- C: <input type="radio" id="keyOfC" value="keyOfC">
-				 	G: <input type="radio" id="keyOfG" value="keyOfG">
-				 	D: <input type="radio" id="keyOfD" value="keyOfD">
-				 	A: <input type="radio" id="keyOfA" value="keyOfA"> -->
-				 	<select class="selectpicker" id="key-picker" title="select one...">
-						<option value="keyOfC">C</option>
-					  	<option value="keyOfG">G</option>
-					  	<option value="keyOfD">D</option>
-					  	<option value="keyOfA">A</option>
-					</select>
-			 	</form>
+				<!-- group 3: key -->
+				<div class="panel panel-default">
+				    <div class="panel-heading" role="tab" id="headingThree" data-toggle="collapse" data-target="#collapseThree" data-parent="#accordion" >
+				     	<h4 class="panel-title">
+					        <a class="collapsed" role="button" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Select a key to play in:</a>
+				      	</h4>
+				    </div>
+				    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+			      		<div class="panel-body">
+			         		<form id="key-form">
+							 	<!-- C: <input type="radio" id="keyOfC" value="keyOfC">
+							 	G: <input type="radio" id="keyOfG" value="keyOfG">
+							 	D: <input type="radio" id="keyOfD" value="keyOfD">
+							 	A: <input type="radio" id="keyOfA" value="keyOfA"> -->
+							 	<select class="selectpicker" id="key-picker" title="select one...">
+									<option value="keyOfC">C</option>
+								  	<option value="keyOfG">G</option>
+								  	<option value="keyOfD">D</option>
+								  	<option value="keyOfA">A</option>
+								</select>
+						 	</form>
+			      		</div>
+				    </div>
+				</div>
 
-		 		<hr>
+				<!-- group 4: instrument -->
+				<div class="panel panel-default">
+				    <div class="panel-heading" role="tab" id="headingFour" data-toggle="collapse" data-target="#collapseFour" data-parent="#accordion">
+				     	<h4 class="panel-title">
+					        <a class="collapsed" role="button" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">Select an instrument to play:</a>
+				      	</h4>
+				    </div>
+				    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+			      		<div class="panel-body">
+			         		<form id="instrument-form">
+							 	<select class="selectpicker" id="instrument-picker" title="select one...">
+									<option value="acoustic_grand_piano">Piano</option>
+									<option value="acoustic_guitar_steel">Steel Guitar</option>
+									<option value="acoustic_guitar_nylon">Nylon Guitar</option>
+									<option value="acoustic_bass">Bass Guitar</option>
+									<option value="alto_sax">Alto Sax</option>
+									<option value="banjo">Banjo</option>
+									<option value="bassoon">Bassoon</option>
+									<option value="cello">Cello</option>
+									<option value="clarinet">Clarinet</option>
+									<option value="french_horn">French Horn</option>
+									<option value="flute">Flute</option>
+									<option value="trumpet">Trumpet</option>
+									<option value="violin">Violin</option>
+								</select>
+						 	</form>
+			      		</div>
+				    </div>
+				</div>
 
-		 		<form id="instrument-form">
-				 	<p> Select an instrument to play: </p>
-				 	<select class="selectpicker" id="instrument-picker" title="select one...">
-						<option value="acoustic_grand_piano">Piano</option>
-						<option value="acoustic_guitar_steel">Steel Guitar</option>
-						<option value="acoustic_guitar_nylon">Nylon Guitar</option>
-						<option value="acoustic_bass">Bass Guitar</option>
-						<option value="alto_sax">Alto Sax</option>
-						<option value="banjo">Banjo</option>
-						<option value="bassoon">Bassoon</option>
-						<option value="cello">Cello</option>
-						<option value="clarinet">Clarinet</option>
-						<option value="french_horn">French Horn</option>
-						<option value="flute">Flute</option>
-						<option value="trumpet">Trumpet</option>
-						<option value="violin">Violin</option>
+				<!-- group 5: sweeper color -->
+				<div class="panel panel-default">
+				    <div class="panel-heading" role="tab" id="headingFive" data-toggle="collapse" data-target="#collapseFive" data-parent="#accordion">
+				     	<h4 class="panel-title">
+					        <a class="collapsed" role="button" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">Select a sweeper color:</a>
+				      	</h4>
+				    </div>
+				    <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+			      		<div class="panel-body">
+			         		<form action="action_page.php">
+								<input type="color" id="color-picker" value="#ff0000">
+							</form>
+			      		</div>
+				    </div>
+				</div>
 
+				<!-- group 6: sound effects -->
+				<div class="panel panel-default">
+				    <div class="panel-heading" role="tab" id="headingSix" data-toggle="collapse" data-target="#collapseSix" data-parent="#accordion">
+				     	<h4 class="panel-title">
+					        <a class="collapsed" role="button" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">Select a sound effect:</a>
+				      	</h4>
+				    </div>
+				    <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
+			      		<div class="panel-body">
+			         		<form id="effects-form">
+							 	<select class="selectpicker" id="effects-picker" title="select one...">
+									<option value="wah-wah">Wah Wah</option>
+									<option value="tremolo">Tremolo</option>
+								</select>
+						 	</form>
+			      		</div>
+				    </div>
+				</div>
 
+			</div>
 
-					</select>
-			 	</form>
-
-		 		<hr>
-
-				<form action="action_page.php">
-				  <p> Select a color for the sweeper: </p>
-				  <input type="color" id="color-picker" value="#ff0000">
-				</form>
-
-				<hr>
-
-				<button type="button" class="btn btn-primary" id="play-btn" onclick="play()">Play</button>
-		 	</div>
+			<button type="button" class="btn btn-primary" id="play-btn" onclick="play()">Play</button>
+		 	<!-- </div> -->
 		</div>
 		<div class="col-md-5 col-xs-5 col-md-offset-1">
     		<canvas id="my-canvas" src="#"></canvas>

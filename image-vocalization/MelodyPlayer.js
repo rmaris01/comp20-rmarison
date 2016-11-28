@@ -2,6 +2,7 @@ var uploadedImg;
 var sweep;
 var key;
 var instrument;
+var effect;
 var currentTimeout;
 var canvas;
 var imgContext;
@@ -48,6 +49,13 @@ function setUpCorrectly() {
 
 	if (instrument == "") {
 		alert("Please select an instrument before playing.");
+		return false;
+	}
+
+	effect = $('#effects-picker').find(':selected').val();
+
+	if (effect == "") {
+		alert("Please select a sound effect before playing.");
 		return false;
 	}
 
@@ -131,7 +139,7 @@ function setTimedFilters(i, notesData) {
 	if (i < notesData.length) {
 		oldSweepPos = drawNextSweeper(oldSweepPos, canvas, imgContext, sweep);
 
-		setFilters(notesData[i].lum);
+		setFilters(notesData[i].lum, effect);
 		setTimeout(function(){setTimedFilters(i+1, notesData);}, notesData[i].duration*1000);
 	}
 }

@@ -52,37 +52,31 @@ function getNoteLength(notesData, pixelGroups, i) {
     return ((255 - delta) / 600); // v2: 255 split into 1.2 groups is 212.5 per group
 }
 
-function setFilters(lum) {
-    excursion = lum / 42.5; // highest lum is 255, and 255 split into 6 groups is 42.5 per group
-    //console.log("excursion: " + excursion);
-
-    // baseFreq = (255 - lum) / 255; // split 255 into two groups
-    // intensity = lum / 127.5; // highest lum is 255, and 255 split into 2 groups is 127.5 per group
-    // rate = lum / 31.875 // highest lum is 255, and 255 split into 8 groups is 31.875 per group
-
-    MIDI.setEffects([
-        // {
-        //     type: "Tremolo",
-        //     intensity: intensity, // 0 to 1
-        //     rate: rate, // 0.001 to 8
-        //     stereoPhase: 0, // 0 to 180
-        //     bypass: 0
-        // },
-        {
-            type: "WahWah",
-            automode: true, // true/false
-            baseFrequency: 0, // 0 to 1
-            excursionOctaves: excursion, // 1 to 6
-            sweep: 0, // 0 to 1
-            resonance: 1, // 1 to 100
-            sensitivity: 0, // -1 to 1
-            bypass: 0
-        }
-            // type: "Filter",
-      //       frequency: 2500, // 20 to 22050
-      //       Q: 1, // 0.001 to 100
-      //       gain: 0, // -40 to 40
-      //       bypass: 0, // 0 to 1+
-      //       filterType: "highpass" // 0 to 7, corresponds to the filter types in the native filter node: lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch, allpass in that order
-    ]);
+function setFilters(lum, effect) {
+    switch(effect) {
+        case 'wah-wah':
+            excursion = lum / 42.5; // highest lum is 255, and 255 split into 6 groups is 42.5 per group
+            MIDI.setEffects([{
+                type: "WahWah",
+                automode: true, // true/false
+                baseFrequency: 0, // 0 to 1
+                excursionOctaves: excursion, // 1 to 6
+                sweep: 0, // 0 to 1
+                resonance: 1, // 1 to 100
+                sensitivity: 0, // -1 to 1
+                bypass: 0
+            }]);
+        case 'tremolo':
+            intensity = lum / 127.5; // highest lum is 255, and 255 split into 2 groups is 127.5 per group
+            console.log(intensity);
+            rate = lum / 31.875 // highest lum is 255, and 255 split into 8 groups is 31.875 per group
+            MIDI.setEffects([{
+                type: "Tremolo",
+                intensity: 1, // 0 to 1
+                rate: 8, // 0.001 to 8
+                stereoPhase: 0, // 0 to 180
+                feedback: 0.9,
+                bypass: 0
+            }]);
+    }   
 }
