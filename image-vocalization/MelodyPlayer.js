@@ -70,6 +70,7 @@ function setUpCanvas(event) {
         imgContext.drawImage(uploadedImg, 0, 0);
     }
     uploadedImg.src = event.target.result;
+    canvas.setAttribute("src", "1");
 }
 
 function createAndPlayMelody(pixelGroups, key, sweep, instrument) {

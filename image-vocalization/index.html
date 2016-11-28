@@ -38,6 +38,8 @@ aspects of the music:
 	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script src="bootstrap/js/bootstrap-select.min.js"></script>
 	
+	<script src="screenfull.js"></script>
+	
 	<script src="soundfont-player.min.js"></script>
 	<script type="text/javascript" src="midiAccess.js"></script>
 	<script type="text/javascript" src="SweepController.js"></script>
@@ -63,6 +65,15 @@ aspects of the music:
 	<script src="tuna-min.js"></script>
 
 	<script>
+		window.onload = function() {
+			var elem = document.getElementById('my-canvas');
+			elem.addEventListener('click', () => {
+			    if (screenfull.enabled && elem.getAttribute("src") != "#") {
+			        screenfull.toggle(elem);
+			    }
+			});
+		}
+
 		function readURL(input) {
 			$('#upload-file-info').html($(input).val());
 		    if (input.files && input.files[0]) {
@@ -74,6 +85,7 @@ aspects of the music:
 		        reader.readAsDataURL(input.files[0]);
 		    }
 		}
+
 	</script>
 
 </head>
@@ -172,7 +184,7 @@ aspects of the music:
 		 	</div>
 		</div>
 		<div class="col-md-5 col-xs-5 col-md-offset-1">
-    		<canvas id="my-canvas"></canvas>
+    		<canvas id="my-canvas" src="#"></canvas>
     	</div>
 	</div>
 
