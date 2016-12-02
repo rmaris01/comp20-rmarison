@@ -70,8 +70,8 @@ function adjustPixelGroupOrder(pixelGroups, sweep) {
 	switch (sweep) {
 		case 'right-to-left':
 		case 'bottom-to-top':
-		console.log('here');
 			return pixelGroups.reverse();
+			break;
 		default:
 			return pixelGroups;
 	}

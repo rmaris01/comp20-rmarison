@@ -116,33 +116,40 @@ console.log(instrument);
 	    instrument: instrument,
 	    onsuccess: function() {
 	    	MIDI.programChange(0, MIDI.GM.byName[instrument].number);
-	    	setTimeout(function(){setTimedFilters(0, notesData);}, 500);
-	    	playNotes(0, 0.5, notesData);
+	    	playNotes(0, notesData);
 	    }
 	});
 }
 
-function playNotes(i, clockDelay, notesData) {
+function playNotes(i, notesData) {
 	if (i < notesData.length) {
+		oldSweepPos = drawNextSweeper(oldSweepPos, canvas, imgContext, sweep);
+		setFilters(notesData[i].lum, effect);
+
         var velocity = 127; 
         MIDI.setVolume(0, 127);
-        MIDI.chordOn(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], velocity, clockDelay);
-    	MIDI.chordOff(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], clockDelay + notesData[i].duration);
-    	clockDelay += notesData[i].duration;
-    	playNotes(i+1, clockDelay, notesData);
+        MIDI.chordOn(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], velocity);
+    	setTimeout(function(){
+	    		MIDI.chordOff(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote]);
+	    		playNotes(i+1, notesData);
+	    	}, notesData[i].duration);
+    	//MIDI.chordOn(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], velocity, clockDelay);
+    	//MIDI.chordOff(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], clockDelay + notesData[i].duration);
+    	//clockDelay += notesData[i].duration;
+    	//playNotes(i+1, clockDelay, notesData);
 	} else {
 			console.log('done');
 	}
 }
 
-function setTimedFilters(i, notesData) {
-	if (i < notesData.length) {
-		oldSweepPos = drawNextSweeper(oldSweepPos, canvas, imgContext, sweep);
+// function setTimedFilters(i, notesData) {
+// 	if (i < notesData.length) {
+// 		oldSweepPos = drawNextSweeper(oldSweepPos, canvas, imgContext, sweep);
 
-		setFilters(notesData[i].lum, effect);
-		setTimeout(function(){setTimedFilters(i+1, notesData);}, notesData[i].duration*1000);
-	}
-}
+// 		setFilters(notesData[i].lum, effect);
+// 		setTimeout(function(){setTimedFilters(i+1, notesData);}, notesData[i].duration*1000);
+// 	}
+// }
 
 //to use soundfont-player:
 //var audioContext = new AudioContext();

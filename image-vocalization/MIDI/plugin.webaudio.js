@@ -207,8 +207,20 @@
 				for (var n = 0; n < list.length; n ++) {
 					var data = list[n];
 					if (effects[data.type] != undefined) {
-						effects[data.type].excursionOctaves = data.excursionOctaves;
+						switch(data.type) {
+							case "WahWah": 
+								console.log('WAHHHHHH');
+								effects[data.type].excursionOctaves = data.excursionOctaves;
+								break;
+							case "Tremolo":
+								console.log('TREMMMMM');
+								effects[data.type].intensity = data.intensity;
+								effects[data.type].rate = data.rate;
+								break;
+						}
 					} else {
+						console.log(effects);
+						effects = [];
 						var effect = new ctx.tunajs[data.type](data);
 						effect.connect(ctx.destination);
 						effects[data.type] = effect;

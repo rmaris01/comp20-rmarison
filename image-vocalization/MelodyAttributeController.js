@@ -49,7 +49,8 @@ function getNoteLength(notesData, pixelGroups, i) {
     // console.log("test: " + test);
     // console.log("delta: " + ((255 - delta) / 600));
     // return 1000 / test; //v3
-    return ((255 - delta) / 600); // v2: 255 split into 1.2 groups is 212.5 per group
+    //return ((255 - delta) / 600); // v2: 255 split into 1.2 groups is 212.5 per group
+    return (((255 - delta) / 600) * 1000)
 }
 
 function setFilters(lum, effect) {
@@ -66,17 +67,18 @@ function setFilters(lum, effect) {
                 sensitivity: 0, // -1 to 1
                 bypass: 0
             }]);
+            break;
         case 'tremolo':
             intensity = lum / 127.5; // highest lum is 255, and 255 split into 2 groups is 127.5 per group
-            console.log(intensity);
             rate = lum / 31.875 // highest lum is 255, and 255 split into 8 groups is 31.875 per group
             MIDI.setEffects([{
                 type: "Tremolo",
-                intensity: 1, // 0 to 1
-                rate: 8, // 0.001 to 8
+                intensity: intensity, // 0 to 1
+                rate: rate, // 0.001 to 8
                 stereoPhase: 0, // 0 to 180
                 feedback: 0.9,
                 bypass: 0
             }]);
+            break;
     }   
 }
