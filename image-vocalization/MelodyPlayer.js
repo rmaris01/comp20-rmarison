@@ -54,10 +54,10 @@ function setUpCorrectly() {
 
 	effect = $('#effects-picker').find(':selected').val();
 
-	if (effect == "") {
-		alert("Please select a sound effect before playing.");
-		return false;
-	}
+	// if (effect == "") {
+	// 	alert("Please select a sound effect before playing.");
+	// 	return false;
+	// }
 
 	return true;
 }
@@ -124,7 +124,9 @@ console.log(instrument);
 function playNotes(i, notesData) {
 	if (i < notesData.length) {
 		oldSweepPos = drawNextSweeper(oldSweepPos, canvas, imgContext, sweep);
-		setFilters(notesData[i].lum, effect);
+		if (effect != "") {
+			setFilters(notesData[i].lum, effect);
+		}
 
         var velocity = 127; 
         MIDI.setVolume(0, 127);

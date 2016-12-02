@@ -80,5 +80,29 @@ function setFilters(lum, effect) {
                 bypass: 0
             }]);
             break;
+        case 'phaser':
+            rate = lum / 31.875 // highest lum is 255, and 255 split into 8 groups is 31.875 per group
+            modFreq = (lum * 3.8) + 500
+            MIDI.setEffects([{
+                type: "Phaser",
+                rate: rate, // 0.01 to 8 is a decent range, but higher values are possible
+                depth: 0.3, // 0 to 1
+                feedback: 0.1, // 0 to 1+
+                stereoPhase: 10, // 0 to 180
+                baseModulationFrequency: modFreq, // 500 to 1500
+                bypass: 0
+            }]);
+            break;
+        // case 'chorus':
+        //     rate = lum / 31.875 // highest lum is 255, and 255 split into 8 groups is 31.875 per group
+        //     depth = lum / 127.5; // highest lum is 255, and 255 split into 2 groups is 127.5 per group
+        //     MIDI.setEffects([{
+        //         type: "Chorus",
+        //         rate: 1.5,
+        //         feedback: 0.2,
+        //         delay: 0.0045,
+        //         bypass: 0
+        //     }]);
+        //     break;    
     }   
 }

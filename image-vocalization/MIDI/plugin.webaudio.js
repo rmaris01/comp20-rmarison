@@ -209,13 +209,15 @@
 					if (effects[data.type] != undefined) {
 						switch(data.type) {
 							case "WahWah": 
-								console.log('WAHHHHHH');
 								effects[data.type].excursionOctaves = data.excursionOctaves;
 								break;
 							case "Tremolo":
-								console.log('TREMMMMM');
 								effects[data.type].intensity = data.intensity;
 								effects[data.type].rate = data.rate;
+								break;
+							case "Phaser":
+								effects[data.type].rate = data.rate;
+								effects[data.type].baseModulationFrequency = data.baseModulationFrequency;
 								break;
 						}
 					} else {
