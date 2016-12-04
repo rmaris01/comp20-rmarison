@@ -91,12 +91,13 @@ aspects of the music:
 		}
 
 		function setFullscreenBackground(fullscreen) {
+			fullscreenBtn = document.getElementById('fullscreen-icon');
 			if (screenfull.isFullscreen) {
-				console.log('1');
 				fullscreen.style = "background-color: black;"
+				fullscreenBtn.className = "glyphicon glyphicon-resize-small";
 			} else {
-				console.log('2');
 				fullscreen.style = "background-color: transparent;"
+				fullscreenBtn.className = "glyphicon glyphicon-resize-full";
 			}
 		}
 
@@ -296,7 +297,7 @@ aspects of the music:
 		    			<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
 		    		</button>
 		    		<button type="button" class="btn btn-primary" id="fullscreen-btn" onclick="toggleFullscreen()">
-		    			<span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+		    			<span class="glyphicon glyphicon-resize-full" id="fullscreen-icon" aria-hidden="true"></span>
 		    		</button>
 		    	</div>
 		    </div>
