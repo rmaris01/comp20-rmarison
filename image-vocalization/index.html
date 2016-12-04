@@ -67,18 +67,37 @@ aspects of the music:
 	<script>
 		window.onload = function() {
 			var elem = document.getElementById('my-canvas');
+			var fullscreen= document.getElementById('canvas-and-btns');
 			elem.addEventListener('click', () => {
 			    if (screenfull.enabled && elem.getAttribute("src") != "#") {
-			        screenfull.toggle(elem);
+			        screenfull.toggle(fullscreen);
 			    }
 			});
+
+			if (screenfull.enabled) {
+			    document.addEventListener(screenfull.raw.fullscreenchange, () => {
+			        setFullscreenBackground(fullscreen);
+			    });
+			}
+
 		}
 
-		function enterFullscreen() {
+		function toggleFullscreen() {
 			var elem = document.getElementById('my-canvas');
+			var fullscreen= document.getElementById('canvas-and-btns');
 		    if (screenfull.enabled && elem.getAttribute("src") != "#") {
-		        screenfull.toggle(elem);
+		        screenfull.toggle(fullscreen);
 		    }
+		}
+
+		function setFullscreenBackground(fullscreen) {
+			if (screenfull.isFullscreen) {
+				console.log('1');
+				fullscreen.style = "background-color: black;"
+			} else {
+				console.log('2');
+				fullscreen.style = "background-color: transparent;"
+			}
 		}
 
 		function readURL(input) {
@@ -266,19 +285,21 @@ aspects of the music:
 
 		</div>
 		<div class="col-md-5 col-xs-5 col-md-offset-1">
-    		<canvas id="my-canvas" src="#"></canvas>
-    		<hr>
-    		<div class="btn-array">
-	    		<button type="button" class="btn btn-primary" id="color-btn">
-					<input type="color" id="color-picker" value="#ff0000">
-	    		</button>
-	    		<button type="button" class="btn btn-primary" id="play-btn" onclick="play()">
-	    			<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-	    		</button>
-	    		<button type="button" class="btn btn-primary" id="fullscreen-btn" onclick="enterFullscreen()">
-	    			<span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-	    		</button>
-	    	</div>
+			<div id="canvas-and-btns">
+	    		<canvas id="my-canvas" src="#"></canvas>
+	    		<hr>
+	    		<div class="btn-array">
+		    		<button type="button" class="btn btn-primary" id="color-btn">
+						<input type="color" id="color-picker" value="#ff0000">
+		    		</button>
+		    		<button type="button" class="btn btn-primary" id="play-btn" onclick="play()">
+		    			<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+		    		</button>
+		    		<button type="button" class="btn btn-primary" id="fullscreen-btn" onclick="toggleFullscreen()">
+		    			<span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+		    		</button>
+		    	</div>
+		    </div>
     	</div>
 	</div>
 

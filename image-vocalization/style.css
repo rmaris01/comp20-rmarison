@@ -33,12 +33,8 @@ hr {
 	max-width:100%; 
   	max-height:100%;
 	border:1px solid #d3d3d3;
-}
-
-.jumbotron hr {
-	width: 90%;
-	margin-bottom: 20px;
-	padding-bottom: 0px;
+	background-color: #d3dce2;
+	border-radius: 4px;
 }
 
 span.label-info {
@@ -64,7 +60,12 @@ input {
 	padding: 2px;
 }
 
+#canvas-and-btns {
+	border-radius: 4px;
+}
+
 .btn-array button {
 	margin-left: 10px;
 	margin-right: 10px;
+	margin-bottom: 10px;
 }
