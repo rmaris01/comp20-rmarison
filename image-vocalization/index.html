@@ -74,6 +74,13 @@ aspects of the music:
 			});
 		}
 
+		function enterFullscreen() {
+			var elem = document.getElementById('my-canvas');
+		    if (screenfull.enabled && elem.getAttribute("src") != "#") {
+		        screenfull.toggle(elem);
+		    }
+		}
+
 		function readURL(input) {
 			$('#upload-file-info').html($(input).val());
 		    if (input.files && input.files[0]) {
@@ -118,7 +125,7 @@ aspects of the music:
 							</label> -->
 							<label class="btn btn-default" for="image-input">
 							    <input id="image-input" type="file" style="display:none;" onchange="readURL(this);">
-							    Select Image:
+							    Upload <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
 							</label>
 							<span class='label label-info' id="upload-file-info"></span>
 				   			<!-- <div class="upload">
@@ -219,7 +226,7 @@ aspects of the music:
 				</div>
 
 				<!-- group 5: sweeper color -->
-				<div class="panel panel-default">
+			<!-- 	<div class="panel panel-default">
 				    <div class="panel-heading" role="tab" id="headingFive" data-toggle="collapse" data-target="#collapseFive">
 				     	<h4 class="panel-title">
 					        <a class="collapsed" role="button" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">Select a sweeper color:</a>
@@ -232,9 +239,9 @@ aspects of the music:
 							</form>
 			      		</div>
 				    </div>
-				</div>
+				</div> -->
 
-				<!-- group 6: sound effects -->
+				<!-- group 5: sound effects -->
 				<div class="panel panel-default">
 				    <div class="panel-heading" role="tab" id="headingSix" data-toggle="collapse" data-target="#collapseSix">
 				     	<h4 class="panel-title">
@@ -257,11 +264,21 @@ aspects of the music:
 
 			</div>
 
-			<button type="button" class="btn btn-primary" id="play-btn" onclick="play()">Play</button>
-		 	<!-- </div> -->
 		</div>
 		<div class="col-md-5 col-xs-5 col-md-offset-1">
     		<canvas id="my-canvas" src="#"></canvas>
+    		<hr>
+    		<div class="btn-array">
+	    		<button type="button" class="btn btn-primary" id="color-btn">
+					<input type="color" id="color-picker" value="#ff0000">
+	    		</button>
+	    		<button type="button" class="btn btn-primary" id="play-btn" onclick="play()">
+	    			<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+	    		</button>
+	    		<button type="button" class="btn btn-primary" id="fullscreen-btn" onclick="enterFullscreen()">
+	    			<span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+	    		</button>
+	    	</div>
     	</div>
 	</div>
 

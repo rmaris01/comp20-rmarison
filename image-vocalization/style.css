@@ -26,9 +26,7 @@ body h1 {
 }
 
 hr {
-	width: 40%;
-	margin-bottom: 20px;
-	padding-bottom: 40px;
+	width: 80%;
 }
 
 #my-canvas {
@@ -52,4 +50,21 @@ span.label-info {
 	background-color: transparent;
 	font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
 	color: #000;
+}
+
+input {
+	background-color: #337ab7;
+	border: 2px #2e6da4;
+    border-radius: 4px;
+    width: 30px;
+    height: 30px;
+}
+
+#color-btn {
+	padding: 2px;
+}
+
+.btn-array button {
+	margin-left: 10px;
+	margin-right: 10px;
 }
