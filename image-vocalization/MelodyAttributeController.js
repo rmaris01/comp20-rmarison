@@ -14,6 +14,30 @@ var keyOfD = [2, 4, 6, 7, 9, 11, 1];
 // [A, B, C#, D, E, F#, G#]
 var keyOfA = [9, 11, 1, 2, 4, 6, 8];
 
+// [E, F#, G#, A, B, C#, D#]
+var keyOfE = [4, 6, 8, 9, 11, 1, 3];
+
+// [B, C#, D#, E, F#, G#, A#]
+var keyOfB = [11, 1, 3, 4, 6, 8, 10];
+
+// [Gb, Ab, Bb, Cb, Db, Eb, F]
+var keyOfGb = [6, 8, 10, 11, 1, 3, 5];
+
+// [Db, Eb, F, Gb, Ab, Bb, C]
+var keyOfDb = [1, 3, 5, 6, 8, 10, 0];
+
+// [Ab, Bb, C, Db, Eb, F, G]
+var keyOfAb = [8, 10, 0, 1, 3, 5, 7];
+
+// [Eb, F, G, Ab, Bb, C, D]
+var keyOfEb = [3, 5, 7, 8, 10, 0, 2];
+
+// [Bb, C, D, Eb, F, G, A]
+var keyOfBb = [10, 0, 2, 3, 5, 7, 9];
+
+// [F, G, A, Bb, C, D, E]
+var keyOfF = [5, 7, 9, 10, 0, 2, 4];
+
 function getPitchInKey(rgbVal, key) {
 	//plays notes in the midi note range 21 - 108 (inclusive)
 	var note = Math.floor((rgbVal / 2.93) + 21); // 255 split into 87 groups is 2.93 per group
@@ -27,11 +51,14 @@ function getPitchInKey(rgbVal, key) {
 function getNoteInSpecifiedKey(keyArray, scaleDegree, note) {
     for (var i = 0; i < keyArray.length; i++) {
     	if (scaleDegree == keyArray[i]) {  // it's in the key, so it's all good
+            console.log(note);
     		return note;
     	}
     }
     // it's not, so add 1 and try again
-    return getNoteInSpecifiedKey(keyArray, scaleDegree + 1, note + 1);
+    note = note + 1;
+    scaleDegree = note % 12;
+    return getNoteInSpecifiedKey(keyArray, scaleDegree, note);
 }
 
 function getNoteLength(notesData, pixelGroups, i) {
