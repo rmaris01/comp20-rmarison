@@ -7,19 +7,22 @@ var currentTimeout;
 var canvas;
 var imgContext;
 var oldSweepPos;
+var isPlaying = false;
 
 function play() {
 	var pixelGroups;
 
-	if (!setUpCorrectly()) {
+	if (isPlaying || !setUpCorrectly()) {
 		return;
 	}
 
+	isPlaying = true;
 	imgContext.clearRect(0, 0, canvas.width, canvas.height);
 	imgContext.drawImage(uploadedImg, 0, 0);
 	pixelGroups = getImgData(uploadedImg, sweep, imgContext);
 	oldSweepPos = drawInitSweeper(sweep, canvas, imgContext);
 	createAndPlayMelody(pixelGroups, key, sweep, instrument);
+
 }
 
 function setUpCorrectly() {
@@ -145,7 +148,10 @@ function playNotes(i, notesData) {
 			if (looper.hasClass('active')) {
 				//loop through the song (start playing all over)
 				play();
-			} //else, just end
+			} else {
+				//done playing/looping, so set isPlaying to false
+				isPlaying = false;
+			}
 	}
 }
 
