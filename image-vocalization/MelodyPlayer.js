@@ -141,6 +141,11 @@ function playNotes(i, notesData) {
     	//playNotes(i+1, clockDelay, notesData);
 	} else {
 			console.log('done');
+			looper = $('#loop-btn');
+			if (looper.hasClass('active')) {
+				//loop through the song (start playing all over)
+				play();
+			} //else, just end
 	}
 }
 
