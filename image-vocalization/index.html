@@ -138,7 +138,7 @@ aspects of the music:
 					        <a class="collapsed" role="button" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">Select an Image</a>
 				      	</h4>
 				    </div>
-				    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+				    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
 			      		<div class="panel-body">
 			         		<!-- <label class="btn btn-default btn-file">
 					   		Select Image <input type="file" id="image-input" onchange="readURL(this);" style="display: none;">
@@ -162,7 +162,7 @@ aspects of the music:
 					        <a class="collapsed" role="button" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Select a sweeping pattern:</a>
 				      	</h4>
 				    </div>
-				    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+				    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
 			      		<div class="panel-body">
 			         		<form id="sweep-form">
 						 	   	<!-- Left to Right: <input type="radio" name="sweeps" id="left-to-right" value="left-to-right">
@@ -189,7 +189,7 @@ aspects of the music:
 					        <a class="collapsed" role="button" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Select a key to play in:</a>
 				      	</h4>
 				    </div>
-				    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+				    <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
 			      		<div class="panel-body">
 			         		<form id="key-form">
 							 	<!-- C: <input type="radio" id="keyOfC" value="keyOfC">
@@ -222,7 +222,7 @@ aspects of the music:
 					        <a class="collapsed" role="button" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">Select an instrument to play:</a>
 				      	</h4>
 				    </div>
-				    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+				    <div id="collapseFour" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFour">
 			      		<div class="panel-body">
 			         		<form id="instrument-form">
 							 	<select class="selectpicker" id="instrument-picker" title="select one...">
@@ -268,13 +268,21 @@ aspects of the music:
 					        <a class="collapsed" role="button" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">Select a sound effect:</a>
 				      	</h4>
 				    </div>
-				    <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
+				    <div id="collapseSix" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSix">
 			      		<div class="panel-body">
 			         		<form id="effects-form">
 							 	<select class="selectpicker" id="effects-picker" title="select one...">
 									<option selected = "selected" value="wah-wah">Wah Wah</option>
 									<option value="tremolo">Tremolo</option>
 									<option value="phaser">Phaser</option>
+									<option value="chorus">Chorus</option>
+									<option value="delay">Delay</option>
+									<option value="bitcrusher">Bitcrusher</option>
+									<option value="moog">Moog</option>
+									<option value="overdrive">Overdrive</option>
+									<option value="pingpong">Ping Pong Delay</option>
+									<option value="panner">Stereo Panner</option>
+									<option value="gain">Gain</option>
 									<option value="none">None</option>
 								</select>
 						 	</form>

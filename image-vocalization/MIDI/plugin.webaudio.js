@@ -219,9 +219,29 @@
 								effects[data.type].rate = data.rate;
 								effects[data.type].baseModulationFrequency = data.baseModulationFrequency;
 								break;
+							case "Chorus":
+								effects[data.type].rate = data.rate;
+								break;
+							case "Delay":
+								effects[data.type].wetLevel = data.wetLevel;
+								break;
+							case "Bitcrusher":
+								effects[data.type].normfreq = data.normfreq;
+								break;
+							case "MoogFilter":
+								//effects[data.type].normfreq = data.normfreq;
+								break;
+							case "PingPongDealy":
+								effects[data.type].delayTimeLeft = data.delayTimeLeft;
+								break;
+							case "Panner":
+								effects[data.type].pan = data.pan;
+								break;
+							case "Gain":
+								effects[data.type].gain = data.gain;
+								break;
 						}
 					} else {
-						console.log(effects);
 						effects = [];
 						var effect = new ctx.tunajs[data.type](data);
 						effect.connect(ctx.destination);

@@ -51,7 +51,6 @@ function getPitchInKey(rgbVal, key) {
 function getNoteInSpecifiedKey(keyArray, scaleDegree, note) {
     for (var i = 0; i < keyArray.length; i++) {
     	if (scaleDegree == keyArray[i]) {  // it's in the key, so it's all good
-            console.log(note);
     		return note;
     	}
     }
@@ -120,16 +119,81 @@ function setFilters(lum, effect) {
                 bypass: 0
             }]);
             break;
-        // case 'chorus':
-        //     rate = lum / 31.875 // highest lum is 255, and 255 split into 8 groups is 31.875 per group
-        //     depth = lum / 127.5; // highest lum is 255, and 255 split into 2 groups is 127.5 per group
-        //     MIDI.setEffects([{
-        //         type: "Chorus",
-        //         rate: 1.5,
-        //         feedback: 0.2,
-        //         delay: 0.0045,
-        //         bypass: 0
-        //     }]);
-        //     break;    
+        case 'chorus':
+            rate = lum / 31.875 // highest lum is 255, and 255 split into 8 groups is 31.875 per group
+            MIDI.setEffects([{
+                type: "Chorus",
+                rate: rate,         //0.01 to 8+
+                feedback: 0.7,     //0 to 1+
+                delay: 0.0045,     //0 to 1
+                bypass: 0          //the value 1 starts the effect as bypassed, 0 or 1
+            }]);
+            break; 
+        case 'delay':
+            wet = lum / 255; // highest lum is 255, and 255 split into 2 groups is 127.5 per group
+            MIDI.setEffects([{
+                type: "Delay",
+                feedback: 0.45,    //0 to 1+
+                delayTime: 500,    //1 to 10000 milliseconds
+                wetLevel: wet,    //0 to 1+
+                dryLevel: 1,       //0 to 1+
+                cutoff: 2000,      //cutoff frequency of the built in lowpass-filter. 20 to 22050
+                bypass: 0
+            }]);
+            break;
+        case 'bitcrusher':
+            normfreq = 1 / lum; // higher lum -> normfreq closer to 0 -> more bitcrushing noise
+            console.log(normfreq);
+            MIDI.setEffects([{
+                type: "Bitcrusher",
+                bits: 4,          //1 to 16
+                normfreq: normfreq,    //0 to 1
+                bufferSize: 4096  //256 to 16384
+            }]);
+            break;
+        case 'moog':
+            MIDI.setEffects([{
+                type: "MoogFilter",
+                cutoff: 0.5,    //0 to 1
+                resonance: 3.8,   //0 to 4
+                bufferSize: 4096  //256 to 16384
+            }]);
+            break;
+        case 'overdrive':
+            MIDI.setEffects([{
+                type: "Overdrive",
+                outputGain: 0.5,         //0 to 1+
+                drive: 0.5,              //0 to 1
+                curveAmount: 0.8,          //0 to 1
+                algorithmIndex: 0,       //0 to 5, selects one of our drive algorithms
+                bypass: 0
+            }]);
+            break;  
+        case 'pingpong':
+            timeLeft = lum / 0.255; // highest lum is 255, and 255 split into 1000 groups is 0.255 per group
+            MIDI.setEffects([{
+                type: "PingPongDelay",
+                wetLevel: 1, //0 to 1
+                feedback: 0.7, //0 to 1
+                delayTimeLeft: timeLeft, //1 to 10000 (milliseconds)
+                delayTimeRight: 550 //1 to 10000 (milliseconds)
+            }]);
+            break;
+        case 'panner':
+            pan = lum / 255;
+            pan = Math.random() < 0.5 ? 0 - pan : pan;
+            console.log(pan);
+            MIDI.setEffects([{
+                type: "Panner",
+                pan: pan // -1 (left) to 1 (right)
+            }]);
+            break;
+        case 'gain':
+            gain = lum / 15;
+            MIDI.setEffects([{
+                type: "Gain",
+                gain: gain // 0 and up
+            }]);
+            break;
     }   
 }

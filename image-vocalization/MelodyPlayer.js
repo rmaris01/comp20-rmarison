@@ -22,7 +22,6 @@ function play() {
 	pixelGroups = getImgData(uploadedImg, sweep, imgContext);
 	oldSweepPos = drawInitSweeper(sweep, canvas, imgContext);
 	createAndPlayMelody(pixelGroups, key, sweep, instrument);
-
 }
 
 function setUpCorrectly() {
@@ -127,7 +126,7 @@ console.log(instrument);
 function playNotes(i, notesData) {
 	if (i < notesData.length) {
 		oldSweepPos = drawNextSweeper(oldSweepPos, canvas, imgContext, sweep);
-		if (effect != "") {
+		if (effect != "none") {
 			setFilters(notesData[i].lum, effect);
 		}
 
