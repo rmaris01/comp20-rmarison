@@ -195,5 +195,10 @@ function setFilters(lum, effect) {
                 gain: gain // 0 and up
             }]);
             break;
+        case "none":
+            MIDI.setEffects([{
+                type: "None"
+            }]);
+            break;
     }   
 }

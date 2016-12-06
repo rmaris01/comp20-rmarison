@@ -126,9 +126,7 @@ console.log(instrument);
 function playNotes(i, notesData) {
 	if (i < notesData.length) {
 		oldSweepPos = drawNextSweeper(oldSweepPos, canvas, imgContext, sweep);
-		if (effect != "none") {
-			setFilters(notesData[i].lum, effect);
-		}
+		setFilters(notesData[i].lum, effect);
 
         var velocity = 127; 
         MIDI.setVolume(0, 127);

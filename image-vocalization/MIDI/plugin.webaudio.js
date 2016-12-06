@@ -206,7 +206,9 @@
 			if (ctx.tunajs) {
 				for (var n = 0; n < list.length; n ++) {
 					var data = list[n];
-					if (effects[data.type] != undefined) {
+					if (list[0].type == "None") {
+						effects = [];					
+					} else if (effects[data.type] != undefined) {	
 						switch(data.type) {
 							case "WahWah": 
 								effects[data.type].excursionOctaves = data.excursionOctaves;
