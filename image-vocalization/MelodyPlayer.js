@@ -8,6 +8,7 @@ var canvas;
 var imgContext;
 var oldSweepPos;
 var isPlaying = false;
+var possibleSweeps = ["left-to-right", "right-to-left", "top-to-bottom", "bottom-to-top", "blocked"];
 
 function play() {
 	var pixelGroups;
@@ -33,10 +34,11 @@ function setUpCorrectly() {
 
 	// sweep = $('#sweep-form input[type=radio]:checked').val();
 	sweep = $('#sweeper-picker').find(':selected').val();
-	console.log(sweep);
 	if (sweep == "") {
-			alert("Please select a sweeping pattern before playing.");
-			return false;
+		alert("Please select a sweeping pattern before playing.");
+		return false;
+	} else if (sweep == "shuffle") {
+		sweep = possibleSweeps[Math.floor(Math.random() * possibleSweeps.length)];
 	}
 
 	// key = $('#key-form input[type=radio]:checked').val();
@@ -144,6 +146,7 @@ function playNotes(i, notesData) {
 			looper = $('#loop-btn');
 			if (looper.hasClass('active')) {
 				//loop through the song (start playing all over)
+				isPlaying = false;
 				play();
 			} else {
 				//done playing/looping, so set isPlaying to false
