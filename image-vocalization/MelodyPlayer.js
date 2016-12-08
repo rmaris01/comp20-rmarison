@@ -8,7 +8,7 @@ var canvas;
 var imgContext;
 var oldSweepPos;
 var isPlaying = false;
-var possibleSweeps = ["left-to-right", "right-to-left", "top-to-bottom", "bottom-to-top", "blocked"];
+var possibleSweeps = ["left-to-right", "right-to-left", "top-to-bottom", "bottom-to-top", "blocked", "swirled"];
 
 function play() {
 	var pixelGroups;

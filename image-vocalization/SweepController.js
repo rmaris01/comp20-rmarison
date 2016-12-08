@@ -4,6 +4,13 @@ var horizontalHeight;
 var verticalWidthBlocked;
 var horizontalHeightBlocked;
 var sweeperColor;
+var currentSwirledPos;
+var swirledTopOffset = 0;
+var swirledLeftOffset = 0;
+var swirledBottomOffset = 0;
+var swirledRightOffset = 0;
+var swirlWidth;
+var swirlHeight;
 
 function getSweepRequirements(img, sweep) {
 	img = img;
@@ -11,6 +18,8 @@ function getSweepRequirements(img, sweep) {
 	horizontalHeight = Math.ceil(img.height / NUM_NOTES);
 	verticalWidthBlocked = Math.ceil(img.width / 5);
 	horizontalHeightBlocked = Math.ceil(img.height / 5);
+	swirlWidth = img.width;
+	swirlHeight = img.height;
 	//console.log("v: " + verticalWidthBlocked);
 	//console.log("h: " + horizontalHeightBlocked);
 
@@ -37,6 +46,18 @@ function getSweepRequirements(img, sweep) {
 				y: 0,
 				width: verticalWidthBlocked,
 				height: horizontalHeightBlocked
+			};
+		case 'swirled':
+			currentSwirledPos = "top";
+			swirledTopOffset = 0;
+			swirledLeftOffset = 0;
+			swirledBottomOffset = 0;
+			swirledRightOffset = 0;
+			return {
+				x: 0,
+				y: 0,
+				width: swirlWidth,
+				height: horizontalHeight
 			};
 	}
 }
@@ -82,6 +103,44 @@ function updateSweepRequirements(img, sweep, oldReqs) {
 					height: horizontalHeightBlocked
 				};
 			}
+		case 'swirled':
+			if (currentSwirledPos == "top") {
+				swirledTopOffset += horizontalHeight;
+				currentSwirledPos = "right";
+				return {
+					x: swirlWidth - swirledRightOffset,
+					y: swirledTopOffset,
+					width: verticalWidth,
+					height: swirlHeight - swirledBottomOffset - swirledTopOffset
+				};
+			} else if (currentSwirledPos == "right") {
+				swirledRightOffset += verticalWidth;
+				currentSwirledPos = "bottom";
+				return {
+					x: swirledLeftOffset,
+					y: swirlHeight - swirledBottomOffset,
+					width: swirlWidth - swirledRightOffset - swirledLeftOffset,
+					height: horizontalHeight
+				};
+			} else if (currentSwirledPos == "bottom") {
+				swirledBottomOffset += horizontalHeight;
+				currentSwirledPos = "left";
+				return {
+					x: swirledLeftOffset,
+					y: swirledTopOffset,
+					width: verticalWidth,
+					height: swirlHeight - swirledBottomOffset - swirledTopOffset
+				};
+			} else if (currentSwirledPos == "left") {
+				swirledLeftOffset += verticalWidth;
+				currentSwirledPos = "top";
+				return {
+					x: swirledLeftOffset,
+					y: swirledTopOffset,
+					width: swirlWidth - swirledRightOffset - swirledLeftOffset,
+					height: horizontalHeight
+				};
+			} 
 	}
 }
 
@@ -95,10 +154,15 @@ function stillSweeping(reqs, img, sweep) {
 			return (reqs.y < img.height);
 		case 'blocked':
 			return (reqs.x < img.width || reqs.y < img.height) //stop when you're in the bottom left corner 
+		case 'swirled':
+			return ((swirlWidth - swirledLeftOffset - swirledRightOffset > 0) && 
+					(swirlHeight - swirledTopOffset - swirledBottomOffset> 0));
 	}
 }
 
 function getSweepStart(sweep, canvas) {
+	swirlWidth = canvas.width;
+	swirlHeight = canvas.height;
 	switch(sweep) {
 		case 'right-to-left':
 			return {
@@ -134,6 +198,18 @@ function getSweepStart(sweep, canvas) {
 				y1: 0,
 				x2: 0,
 				y2: horizontalHeightBlocked
+			};
+		case 'swirled':
+			currentSwirledPos = "top";
+			swirledTopOffset = 0;
+			swirledLeftOffset = 0;
+			swirledBottomOffset = 0;
+			swirledRightOffset = 0;
+			return {
+				x1: 0,
+				y1: 0,
+				x2: canvas.width,
+				y2: 0
 			};
 	}
 }
@@ -191,6 +267,44 @@ function adjustSweepReqsBySweep(oldSweepPos, sweep, canvas) {
 					y2: oldSweepPos.y2
 				};
 			}
+		case 'swirled':
+			if (currentSwirledPos == "top") {
+				swirledTopOffset += horizontalHeight;
+				currentSwirledPos = "right";
+				return {
+					x1: swirlWidth - swirledRightOffset,
+					y1: swirledTopOffset,
+					x2: swirlWidth - swirledRightOffset,
+					y2: swirlHeight - swirledBottomOffset
+				};
+			} else if (currentSwirledPos == "right") {				
+				swirledRightOffset += verticalWidth;
+				currentSwirledPos = "bottom";
+				return {
+					x1: swirledLeftOffset,
+					y1: swirlHeight - swirledBottomOffset,
+					x2: swirlWidth - swirledRightOffset,
+					y2: swirlHeight - swirledBottomOffset
+				};
+			} else if (currentSwirledPos == "bottom") {
+				swirledBottomOffset += horizontalHeight;
+				currentSwirledPos = "left";
+				return {
+					x1: swirledLeftOffset,
+					y1: swirledTopOffset,
+					x2: swirledLeftOffset,
+					y2: swirlHeight - swirledBottomOffset
+				};
+			} else if (currentSwirledPos == "left") {
+				swirledLeftOffset += verticalWidth;
+				currentSwirledPos = "top";
+				return {
+					x1: swirledLeftOffset,
+					y1: swirledTopOffset,
+					x2: swirlWidth - swirledRightOffset,
+					y2: swirledTopOffset
+				};
+			} 
 	}
 }
 
