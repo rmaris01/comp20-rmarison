@@ -9,22 +9,6 @@ https://github.com/mudcube/MIDI.js
 https://github.com/Theodeus/tuna
 -->
 
-<!-- 
-aspects of the music:
--let user select key
--RGB ave value (r + g + b) / 3 but put into better range : pitch
-- dominating rgb value = pitch
-- three different instruments for pitch, each from rgb (play a chord)
--RGB percentage within 255 range, ((r + g + b) / (255*3)) * 1500, where 1500 is max number of ms that I want : duration
--size of image/size of pixel group: duration?
--duration: based on one of rgb, user gets to choose which one
--RED: ?
--GREEN: ?
--BLUE: ?
--APLHA: key?
--LUM: effects and also major/minor key (if in lower half then minor, else major) 
--->
-
 <html>
 
 <head>
@@ -93,11 +77,11 @@ aspects of the music:
 		function setFullscreenBackground(fullscreen) {
 			fullscreenBtn = document.getElementById('fullscreen-icon');
 			if (screenfull.isFullscreen) {
-				fullscreen.style = "background-color: black;"
 				fullscreenBtn.className = "glyphicon glyphicon-resize-small";
+				$(fullscreen).addClass("fullscreen");
 			} else {
-				fullscreen.style = "background-color: transparent;"
 				fullscreenBtn.className = "glyphicon glyphicon-resize-full";
+				$(fullscreen).removeClass("fullscreen");
 			}
 		}
 
